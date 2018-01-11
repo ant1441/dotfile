@@ -1,0 +1,14 @@
+Host github.com
+    IdentityFile ~/.ssh/github_rsa
+
+Host bitbucket.org
+    IdentityFile ~/.ssh/github_rsa
+
+# Personal Stuff
+Host hodgen.uk
+    Port 1441
+
+Host homePi
+    HostName 10.0.1.1
+    User pi
+    IdentityFile ~/.ssh/personal_rsa
