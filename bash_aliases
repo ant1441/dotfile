@@ -1,15 +1,10 @@
 #!/bin/bash
 
 # General Aliases
-alias texclean='rm -f *.toc *.aux *.log *.cp *.fn *.tp *.vr *.pg *.ky'
 alias h='history'
 alias allh='history | more'
 alias hgrep='history | grep'
-alias j="jobs -l"
-
 alias c='clear'
-# don't alias .
-#alias .='cwd
 
 # Navigation
 # take care aliasing cd, easy potential for infinite loops
@@ -17,13 +12,6 @@ alias c='clear'
 alias cd..='cd ..'
 #alias cdwd='cd $(bin/pwd)'
 alias cwd='echo $PWD'
-
-alias pu="pushd"
-alias po="popd"
-
-# File system
-alias ln='ln -iv'
-alias du='du -h'
 
 # somels aliases, 'l' should my default list command
 alias ll='ls -alFh'
@@ -37,14 +25,8 @@ if hash colordiff 2>/dev/null; then
 fi
 alias now='date +"%T"'
 
-# open a file window at the given location
-alias cdopen=xdg-open
-
 # Git
 alias g='git'
-
-alias notebook='ipython notebook'
-alias pnotebook='ipython notebook --pylab=inline'
 
 # tmux 256 colours
 alias tmux='tmux -2'
@@ -141,6 +123,36 @@ palert ()
     slack_ping "${type}: ${msg}"
 }
 
+echo_passed () {
+    echo -ne "\e[32m"
+cat << 'EOF'
+                         .       .
+                        / `.   .' \
+                .---.  <    > <    >  .---.
+                |    \  \ - ~ ~ - /  /    |
+                 ~-..-~             ~-..-~
+             \~~~\.'                    `./~~~/
+              \__/                        \__/
+               /                  .-    .  \
+        _._ _.-    .-~ ~-.       /       }   \/~~~/
+    _.-'q  }~     /       }     {        ;    \__/
+   {'__,  /      (       /      {       /      `. ,~~|   .     .
+    `''''='~~-.__(      /_      |      /- _      `..-'   \\   //
+                / \   =/  ~~--~~{    ./|    ~-.     `-..__\\_//_.-'
+               {   \  +\         \  =\ (        ~ - . _ _ _..---~
+               |  | {   }         \   \_\
+              '---.o___,'       .o___,'
+EOF
+    echo -ne "\e[0m"
+}
+
+
+# Vim aliases
+# pvim is for running vim in a bash pipeline
+alias pvim='vim +":setlocal buftype=nofile" -'
+alias pvim_yaml='vim +":setlocal buftype=nofile filetype=yaml" -'
+alias pvim_json='vim +":setlocal buftype=nofile filetype=json" -'
+
 goci()
 {
     shell_pid=$$
@@ -162,10 +174,22 @@ goci()
             echo "'''$line''' changed - building..."
             running=true
             (
-                set -xe
-                go build -v
+                set -e
+                go_packages=$(go list ./... | grep -v /vendor/)
+                echo "Go Packages: $go_packages"
+                go build
                 echo testing...
-                go test -v $(go list ./... | grep -v /vendor/)
+                go test -v $go_packages
+                if command -v golint >/dev/null 2>&1; then
+                    echo linting...
+                    golint -set_exit_status $go_packages
+                fi
+                if [ -n "$(type -t echo_passed)" ] && [ "$(type -t echo_passed)" = function ]; then
+                    clear
+                    echo_passed
+                else
+                    echo "Success!"
+                fi
             ) &
             echo $! > ${pid_file}
             sleep 1
