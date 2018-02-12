@@ -1,13 +1,11 @@
 #!/bin/bash
 
 # General Aliases
-alias texclean='rm -f *.toc *.aux *.log *.cp *.fn *.tp *.vr *.pg *.ky'
 alias h='history'
 alias allh='history | more'
 alias hgrep='history | grep'
-alias j="jobs -l"
-
 alias c='clear'
+
 # don't alias .
 #alias .='cwd
 
@@ -18,14 +16,11 @@ alias cd..='cd ..'
 #alias cdwd='cd $(bin/pwd)'
 alias cwd='echo $PWD'
 
-alias pu="pushd"
-alias po="popd"
-
 # File system
 alias ln='ln -iv'
 alias du='du -h'
 
-# somels aliases, 'l' should my default list command
+# some ls aliases, 'l' should my default list command
 alias ll='ls -alFh'
 alias la='ls -A'
 alias l='ls -CFB --hide="*.pyc" --hide="*~"'
@@ -43,37 +38,12 @@ alias cdopen=xdg-open
 # Git
 alias g='git'
 
-alias notebook='ipython notebook'
-alias pnotebook='ipython notebook --pylab=inline'
-
 # tmux 256 colours
 alias tmux='tmux -2'
-
-#
-# Csh compatability:
-#
-alias unsetenv=unset
-function setenv () {
-  export $1="$2"
-}
 
 # Irssi is weird on larger screens under tmux
 # http://www.wisdomandwonder.com/link/7784/making-irssi-refresh-work-with-tmux
 alias irssi='TERM=screen-256color irssi'
-
-# Functions
-files     () { find ${1} -type f -print ; }
-ff        () { find . -name ${1} -print ; }
-llp       () { ls --color=always -lag "$@" | more ; }
-word      () { fgrep -i "$*" /usr/share/dict/british-english ; }
-wordcount () { cat "${1}" | tr -s ' 	.,;:?\!()[]"' '\012' | \
-               awk 'END {print NR}' ; }
-
-colour() {
-  heads=${@:1:$((${#@} - 1))}
-  tail=${@:${#@}}
-  pygmentize -f terminal -g $tail | less -R $heads
-}
 
 #
 # Git
@@ -81,12 +51,12 @@ colour() {
 
 git_pull_all ()
 {
-  find -L . -name .git -type d -prune -print0 | xargs -0 -n 1 -I{} bash -c 'echo {}; git -C {}/.. pull; echo'
+  find -name .git -execdir git pull \;
 }
 
 git_checkout_all ()
 {
-  find -L . -name .git -type d -prune -print0 | xargs -0 -n 1 -I{} bash -c 'echo {}; git -C {}/.. checkout $1; git -C {}/.. branch; echo'
+  find -name .git -execdir git checkout "$1" \;
 }
 
 git_remote_state ()
@@ -141,17 +111,47 @@ palert ()
     slack_ping "${type}: ${msg}"
 }
 
+echo_passed () {
+    echo -ne "\e[32m"
+cat << 'EOF'
+                         .       .
+                        / `.   .' \
+                .---.  <    > <    >  .---.
+                |    \  \ - ~ ~ - /  /    |
+                 ~-..-~             ~-..-~
+             \~~~\.'                    `./~~~/
+              \__/                        \__/
+               /                  .-    .  \
+        _._ _.-    .-~ ~-.       /       }   \/~~~/
+    _.-'q  }~     /       }     {        ;    \__/
+   {'__,  /      (       /      {       /      `. ,~~|   .     .
+    `''''='~~-.__(      /_      |      /- _      `..-'   \\   //
+                / \   =/  ~~--~~{    ./|    ~-.     `-..__\\_//_.-'
+               {   \  +\         \  =\ (        ~ - . _ _ _..---~
+               |  | {   }         \   \_\
+              '---.o___,'       .o___,'
+EOF
+    echo -ne "\e[0m"
+}
+
+# Vim aliases
+# pvim is for running vim in a bash pipeline
+alias pvim='vim +":setlocal buftype=nofile" -'
+alias pvim_yaml='vim +":setlocal buftype=nofile filetype=yaml" -'
+alias pvim_json='vim +":setlocal buftype=nofile filetype=json" -'
+
 goci()
 {
     shell_pid=$$
     running=false
 
     pid_file=$(mktemp --suffix _goci.pid)
-    trap "rm -f $pid_file" EXIT
+    trap "rm -f $pid_file && setterm -cursor on" EXIT SIGINT
 
     excludes="${excludes}$(find . \( -path ./vendor -o -path ./.git \) -prune -o -type f -executable -print0 | tr "|" "\|" | tr "\0" "|")"
     excludes="${excludes}\..*\.sw[px]$|.git|.*~$|vendor/.*"
 
+    setterm -cursor off
     clear
     inotifywait --quiet --monitor --recursive --exclude "${excludes}" --event modify,create,delete,move --format %f . | stdbuf -oL uniq | while read line
     do
@@ -162,10 +162,22 @@ goci()
             echo "'''$line''' changed - building..."
             running=true
             (
-                set -xe
-                go build -v
+                set -e
+                go_packages=$(go list ./... | grep -v /vendor/)
+                echo "Go Packages: $go_packages"
+                go build $GO_CI_BUILD_ARGS
                 echo testing...
-                go test -v $(go list ./... | grep -v /vendor/)
+                go test -v $go_packages
+                if command -v golint >/dev/null 2>&1; then
+                    echo linting...
+                    golint -set_exit_status $go_packages
+                fi
+                if [ -n "$(type -t echo_passed)" ] && [ "$(type -t echo_passed)" = function ]; then
+                    clear
+                    echo_passed
+                else
+                    echo "Success!"
+                fi
             ) &
             echo $! > ${pid_file}
             sleep 1
@@ -174,4 +186,6 @@ goci()
     done
 }
 
-# Below are functions added with the add-alias command
+if [ -f ~/.secret_bash_aliases ]; then
+    . ~/.secret_bash_aliases
+fi
