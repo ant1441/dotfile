@@ -2,10 +2,10 @@
 
 - link:
     ~/.profile: profile
-    ~/.bash_profile: bash_profile
     ~/.bashrc: bashrc
     ~/.bash_aliases: bash_aliases
     ~/.gitconfig: gitconfig
+    # https://github.com/git/git/blob/5be1f00a9a701532232f57958efab4be8c959a29/contrib/completion/git-completion.bash
     ~/.git-completion.bash: git-completion.bash
     ~/.git_global_ignore: git_global_ignore
     ~/.ssh/config:
@@ -13,7 +13,7 @@
         create: true
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
-    ~/.zshrc: zshrc
+    ~/.ripgreprc: ripgreprc
     ~/bin:
         path: bin/
         create: true
