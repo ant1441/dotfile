@@ -97,6 +97,7 @@ call neobundle#end()
 NeoBundleCheck
 
 set t_Co=256                    " Let vim use 256 colours
+
 let mapleader = "," " Rebind <Leader> key
 
 " bind Ctrl+<movement> keys to move around the windows, instead of using Ctrl+w + <movement>
@@ -111,7 +112,7 @@ colorscheme molokai
 " File stuff
 syntax on                   " Turn on syntax highlighting
 filetype indent plugin on   " Turn on filetype detection and load the indent and plugin file
-set synmaxcol=500           " only highlight for the first n cols (lags on big files)
+set synmaxcol=1000          " only highlight for the first n cols (lags on big files)
 
 " Higlight current line and set <leader>c to toggle
 hi CursorLine cterm=bold
@@ -154,7 +155,7 @@ inoremap <C-n> <ESC>:nohl<CR>
 highlight BadWhitespace ctermbg=red guibg=red
 au BufRead,BufNewFile * match BadWhitespace /\s\+$/
 highlight Tab ctermbg=blue guibg=blue
-au BufRead,BufNewFile * match Tab /^\t\+/
+au BufRead,BufNewFile *.py match Tab /^\t\+/
 " Highlight non-braking-space
 au VimEnter,BufWinEnter * syn match ErrorMsg " "
 
@@ -169,33 +170,18 @@ inoremap kj <ESC>
 map <silent> <F6> <ESC>:setlocal spell spelllang=en_gb<CR>
 map <silent> <F7> <ESC>:setlocal nospell<CR>
 
-" Alternate Searcher
+" Set ctrlp to use best availabe search program
 if executable('rg')
   " Use ripgrep for speed
   set grepprg=rg\ --color=never
 
   " Use rg in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  " ag is fast enough that CtrlP doesn't need to cache
+  " rg is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
-
-elseif executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --vimgrep\ $*
-  set grepformat=%f:%l:%c:%m
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-
-  noremap gr :Ag <cword> *<CR>
-  noremap Gr :Ag <cword> %:p:h/*<CR>
-  noremap gR :Ag '\b<cword>\b' *<CR>
-  noremap GR :Ag '\b<cword>\b' %:p:h/*<CR>
 endif
 
+set wildignore+=*/.git/*,*/tmp/*,*.swp
 let g:ctrlp_custom_ignore = { 'dir':  'vendor$\|node_modules$' }
 
 " NeoComplete config
@@ -207,6 +193,8 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " syntastic config
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Enable omni completion.
@@ -216,7 +204,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-"" Plugin key-mappings.
+"" neosnippet key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
@@ -264,3 +252,13 @@ au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 " Set for vim-racer, need to better understand
 set hidden
+
+" Java
+if executable('javac')
+  " autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  let g:syntastic_java_javac_config_file_enabled = 1
+endif
+
+" Work yaml.j2 Kubernetes template files
+au BufNewFile,BufRead *.yaml.j2 set filetype=yaml
+au BufNewFile,BufRead *.yml.j2 set filetype=yaml
