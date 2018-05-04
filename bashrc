@@ -56,8 +56,41 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
+
+if [ -f ~/.git-prompt.sh ]; then
+    . ~/.git-prompt.sh
+fi
+
+# Check if we have SCM branch functions defined
+if ! ( [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ] ); then
+# if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
+    echo "NO __git_ps1"
+    __git_ps1() { :; }
+fi
+
+# Check if we have kubectx_ps1 functions defined
+if ! ([ -n "$(type -t __kubectx_ps1)" ] && [ "$(type -t __kubectx_ps1)" = function ]); then
+    __kubectx_ps1() {
+        local printf_format=' [%s]';
+        local k8sstring
+
+        if ! command -v kubectl >/dev/null 2>&1; then
+            exit
+        fi
+        local cur_ctx=$(kubectl config view -o=jsonpath='{.current-context}')
+
+        k8sstring="$cur_ctx"
+
+        ns="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${cur_ctx}\")].context.namespace}")"
+        if [[ -n "${ns}" ]]; then
+            k8sstring="${k8sstring}/${ns}"
+        fi
+
+        printf -- "$printf_format" "$k8sstring"
+    }
+fi
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -84,9 +117,9 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     if [ "$nice_colours" = yes ]; then
-        PS1="${debian_chroot:+($debian_chroot)}\[${bldgrn}\]\u@\h\[${NC}\]\[${bldylw}\]\$(__git_ps1)\[${NC}\]:\[${bldblu}\]\w\[${NC}\]\$ "
+        PS1='${debian_chroot:+($debian_chroot)}\[${bldgrn}\]\u\[${NC}\]:\[${bldblu}\]\w\[${NC}\]\[${bldylw}\]$(__kubectx_ps1)\[${NC}\]\[\033[33m\]$(__git_ps1)\[${NC}\]\$ '
     else
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[34m\]$(__kubectx_ps1)\[\033[00m\]\[\033[33m\]$(__git_ps1)\[\033[00m\]\$ '
     fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -150,16 +183,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# virtualenvwrapper
-# if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-#     export WORKON_HOME=$HOME/.virtualenvs
-#     export PROJECT_HOME=$HOME/Documents/python
-#     source /usr/local/bin/virtualenvwrapper.sh
-# fi
-
-# Don't write .pyc files
-# export PYTHONDONTWRITEBYTECODE=1
-
 # npm
 if [ -d ~/.npm-packages ]; then
     export NPM_PACKAGES="$HOME/.npm-packages"
@@ -177,11 +200,6 @@ if [ -f ~/.tmuxinator.bash ]; then
     . ~/.tmuxinator.bash
 fi
 
-# Check if we have SCM branch functions defined
-if ! [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
-    __git_p1() { :; }
-fi
-
 # CPAN stuff
 if [ -d ~/perl5 ]; then
     PATH="$HOME/perl5/bin${PATH+:}${PATH}"; export PATH;
@@ -191,7 +209,7 @@ if [ -d ~/perl5 ]; then
     PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 fi
 
-# Go
+# Golang
 if command -v go >/dev/null 2>&1; then
     export GOPATH="$HOME/.gopath"
     mkdir -p $GOPATH
@@ -203,6 +221,11 @@ fi
 # Kubernetes
 if command -v kubectl >/dev/null 2>&1; then
     source <(kubectl completion bash)
+fi
+
+# Minikube
+if command -v minikube >/dev/null 2>&1; then
+    source <(minikube completion bash)
 fi
 
 # Helm
@@ -222,18 +245,23 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
     : # . "$NVM_DIR/nvm.sh"  # This loads nvm
 fi
 
-# SSH agent
-if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval `ssh-agent -s`
-  ssh-add
-fi
-
 # Rust
 if [ -d "$HOME/.cargo/bin" ] ; then
     PATH="$HOME/.cargo/bin:${PATH}"
+    export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$(rustc +nightly --print sysroot)/lib:$LD_LIBRARY_PATH
+fi
+if [ -d "$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/" ] ; then
+    export RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/"
+elif [ -d "$HOME/Documents/rust/rust" ] ; then
+    export RUST_SRC_PATH="$HOME/Documents/rust/rust/src"
 fi
 if command -v rustup >/dev/null 2>&1; then
     source <(rustup completions bash)
+fi
+
+if command -v rg >/dev/null 2>&1; then
+    export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 fi
 
 # Emscripten
@@ -241,8 +269,50 @@ if [ -d "$HOME/Documents/emscripten" ] ; then
     PATH="$HOME/Documents/emscripten/emsdk_portable:$HOME/Documents/emscripten/emsdk_portable/clang/fastcomp/build_incoming_64/bin:$HOME/Documents/emscripten/emsdk_portable/node/4.1.1_64bit/bin:$HOME/Documents/emscripten/emsdk_portable/emscripten/incoming:${PATH}"
 fi
 
+# Java
+
+if [ -d "$HOME/.local/gradle-4.2.1" ] ; then
+    export GRADLE_HOME=$HOME/.local/gradle-4.2.1
+    export PATH="$GRADLE_HOME/bin:$PATH"
+fi
+
+# Python
+
+if [ -d "$HOME/.python3-env" ] ; then
+    VIRTUAL_ENV_DISABLE_PROMPT=true . $HOME/.python3-env/bin/activate
+fi
+
+# Terraform
+if command -v terraform >/dev/null 2>&1; then
+    # terraform -install-autocomplete
+    complete -C /home/ahodgen/.local/bin/terraform terraform
+fi
+
+# Vault
+if command -v vault >/dev/null 2>&1; then
+    # vault -autocomplete-install
+    complete -C /home/ahodgen/.local/bin/vault vault
+fi
+
 # Digital Ocean
 if command -v doctl >/dev/null 2>&1; then
     source <(doctl completion bash)
 fi
 
+# TODO Figure out keychain with gpg
+
+# GPG
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Keychain ssh key management
+if command -v keychain >/dev/null 2>&1; then
+    export KEYCHAIN_DEBUG=1
+    keychain --agents gpg,ssh --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` google_compute_engine 299B947C
+    # keychain --agents gpg,ssh --quiet --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` 299B947C google_compute_engine
+    [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
+    [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
+       . $HOME/.keychain/$HOSTNAME-sh
+    [ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && \
+       . $HOME/.keychain/$HOSTNAME-sh-gpg
+fi
