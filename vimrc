@@ -44,6 +44,13 @@ if dein#load_state(expand('~/.vim/bundles'))
   " YAML folding
   call dein#add('digitalrounin/vim-yaml-folds')
 
+  " Terraform
+  if executable('terraform')
+    call dein#add('hashivim/vim-terraform')
+    let g:terraform_align=1
+    let g:terraform_fold_sections=1
+  endif
+
   " Java
   if executable('javac')
     " call dein#add('artur-shaik/vim-javacomplete2')
@@ -80,6 +87,13 @@ if dein#load_state(expand('~/.vim/bundles'))
   endif
 
   call dein#add('leafgarland/typescript-vim')
+  " Elm
+  if executable('elm')
+    call dein#add('elmcast/elm-vim')
+  endif
+
+  " Gitlab
+  call dein#add('shumphrey/fugitive-gitlab.vim')
 
   " Required:
   call dein#end()
@@ -280,3 +294,7 @@ endif
 " Work yaml.j2 Kubernetes template files
 au BufNewFile,BufRead *.yaml.j2 set filetype=yaml
 au BufNewFile,BufRead *.yml.j2 set filetype=yaml
+
+if filereadable($HOME . "/.vimrc_local")
+    source ~/.vimrc_local
+endif
