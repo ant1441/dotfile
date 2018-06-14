@@ -22,7 +22,9 @@ if dein#load_state(expand('~/.vim/bundles'))
   " Appearance
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
+  " Colourscheme
   call dein#add('tomasr/molokai')
+  call dein#add('dracula/vim')
 
   " Syntax checking with various linters
   call dein#add('scrooloose/syntastic')
@@ -122,7 +124,8 @@ map <c-l> <c-w>l
 map <c-h> <c-w>h
 
 " Colourscheme
-colorscheme molokai
+" colorscheme molokai
+colorscheme dracula
 
 " File stuff
 syntax on                   " Turn on syntax highlighting
@@ -247,7 +250,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 set laststatus=2                            " Enable Airline by default
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'powerlineish'
+" let g:airline_theme = 'powerlineish'
 
 " Rust
 au FileType rust nmap gd <Plug>(rust-def)
