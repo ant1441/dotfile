@@ -7,7 +7,7 @@ alias hgrep='history | grep'
 alias c='clear'
 
 # Go alias for rg
-alias rggo="rg -t go -g '!vendor'"
+alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
 
 # Navigation
 # take care aliasing cd, easy potential for infinite loops
