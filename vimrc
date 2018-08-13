@@ -14,6 +14,9 @@ if dein#load_state(expand('~/.vim/bundles'))
   " Required:
   call dein#add(expand('~/.vim/bundles/repos/github.com/Shougo/dein.vim'))
 
+  " You can specify revision/branch/tag.
+  " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+
   " Code snippet suggestions
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('Shougo/neosnippet.vim')
@@ -31,6 +34,9 @@ if dein#load_state(expand('~/.vim/bundles'))
 
   " Indent highlighting
   call dein#add('Yggdroot/indentLine')
+
+  " Editorconfig (https://editorconfig.org/)
+  call dein#add('editorconfig/editorconfig-vim')
 
   " File finder
   call dein#add('ctrlpvim/ctrlp.vim')
@@ -53,7 +59,7 @@ if dein#load_state(expand('~/.vim/bundles'))
 
   " Java
   if executable('javac')
-    " call dein#add('artur-shaik/vim-javacomplete2')
+    call dein#add('artur-shaik/vim-javacomplete2')
   endif
   " Scala
   if executable('sbt')
@@ -67,9 +73,7 @@ if dein#load_state(expand('~/.vim/bundles'))
   call dein#add('godlygeek/tabular')
   call dein#add('plasticboy/vim-markdown')
 
-  " You can specify revision/branch/tag.
-  " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
+  " Golang
   if executable('go')
     call dein#add('fatih/vim-go')
     let g:go_metalinter_autosave = 1
@@ -86,6 +90,7 @@ if dein#load_state(expand('~/.vim/bundles'))
     let g:racer_experimental_completer = 1
   endif
 
+  " Typescript
   call dein#add('leafgarland/typescript-vim')
   " Elm
   if executable('elm')
@@ -94,6 +99,9 @@ if dein#load_state(expand('~/.vim/bundles'))
 
   " Gitlab
   call dein#add('shumphrey/fugitive-gitlab.vim')
+
+  " Nginx
+  call dein#add('chr4/nginx.vim')
 
   " Required:
   call dein#end()
@@ -226,8 +234,10 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 " syntastic config
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_sh_shellcheck_args = "-e SC2086"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS

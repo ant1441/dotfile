@@ -13,6 +13,7 @@ alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
 # take care aliasing cd, easy potential for infinite loops
 # alias cd='venv_cd'
 alias cd..='cd ..'
+alias cdr='cd $(realpath .)'
 #alias cdwd='cd $(bin/pwd)'
 alias cwd='echo $PWD'
 

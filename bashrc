@@ -269,13 +269,6 @@ if [ -d "$HOME/Documents/emscripten" ] ; then
     PATH="$HOME/Documents/emscripten/emsdk_portable:$HOME/Documents/emscripten/emsdk_portable/clang/fastcomp/build_incoming_64/bin:$HOME/Documents/emscripten/emsdk_portable/node/4.1.1_64bit/bin:$HOME/Documents/emscripten/emsdk_portable/emscripten/incoming:${PATH}"
 fi
 
-# Java
-
-if [ -d "$HOME/.local/gradle-4.2.1" ] ; then
-    export GRADLE_HOME=$HOME/.local/gradle-4.2.1
-    export PATH="$GRADLE_HOME/bin:$PATH"
-fi
-
 # Python
 
 if [ -d "$HOME/.python3-env" ] ; then
@@ -307,8 +300,8 @@ export GPG_TTY
 
 # Keychain ssh key management
 if command -v keychain >/dev/null 2>&1; then
-    export KEYCHAIN_DEBUG=1
-    keychain --agents gpg,ssh --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` google_compute_engine 299B947C
+    # export KEYCHAIN_DEBUG=1
+    keychain -q --agents gpg,ssh --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` google_compute_engine 299B947C
     # keychain --agents gpg,ssh --quiet --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` 299B947C google_compute_engine
     [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
     [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
