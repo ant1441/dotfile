@@ -17,5 +17,4 @@
     ~/bin:
         path: bin/
         create: true
-
-
+    ~/.config/flake8: flake8
