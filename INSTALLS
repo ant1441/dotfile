@@ -1,0 +1,29 @@
+curl
+tree
+moreutils
+
+docker-ce
+vim-gtk
+ - dein
+ - ~/.vimrc
+python3-venv
+ - jupyter
+ - requests
+ - yq
+ - python-ceritfi (maybe)
+git
+Rust
+ - cargo-update
+  - libssl-dev
+  - cmake
+ - ripgrep
+ _ racer
+ - loc
+ - hexyl
+jq
+go
+ - vim-go (:GoInstallBinaries)
+ - github.com/tomnomnom/gron
+htop
+grepcidr
+shellcheck

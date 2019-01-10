@@ -6,8 +6,11 @@ alias allh='history | more'
 alias hgrep='history | grep'
 alias c='clear'
 
+alias vi='vim'
+
 # Go alias for rg
 alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
+alias rgjava="rg -t java -g '!*test*'"
 
 # Navigation
 # take care aliasing cd, easy potential for infinite loops

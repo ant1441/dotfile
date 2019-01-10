@@ -75,11 +75,12 @@ if ! ([ -n "$(type -t __kubectx_ps1)" ] && [ "$(type -t __kubectx_ps1)" = functi
     __kubectx_ps1() {
         local printf_format=' [%s]';
         local k8sstring
+        local cur_ctx
 
         if ! command -v kubectl >/dev/null 2>&1; then
             exit
         fi
-        local cur_ctx=$(kubectl config view -o=jsonpath='{.current-context}')
+        cur_ctx=$(kubectl config view -o=jsonpath='{.current-context}')
 
         k8sstring="$cur_ctx"
 
@@ -192,7 +193,7 @@ if [ -d ~/.npm-packages ]; then
     # Unset manpath so we can inherit from /etc/manpath via the `manpath`
     # command
     unset MANPATH # delete if you already modified MANPATH elsewhere in your config
-    MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+    export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 fi
 
 # tmux
@@ -220,7 +221,23 @@ fi
 
 # Kubernetes
 if command -v kubectl >/dev/null 2>&1; then
-    source <(kubectl completion bash)
+    # We cache the output to speed up bash startup
+    if [ ! -e /tmp/kubectl_completion ]; then
+        kubectl completion bash > /tmp/kubectl_completion
+    fi
+    source <(cat /tmp/kubectl_completion)
+fi
+
+if command -v linkerd >/dev/null 2>&1; then
+    source <(linkerd completion bash)
+fi
+
+if command -v ark >/dev/null 2>&1; then
+    source <(ark completion bash)
+fi
+
+if command -v kubeless >/dev/null 2>&1; then
+    source <(kubeless completion bash)
 fi
 
 # Minikube
@@ -270,9 +287,13 @@ if [ -d "$HOME/Documents/emscripten" ] ; then
 fi
 
 # Python
-
 if [ -d "$HOME/.python3-env" ] ; then
     VIRTUAL_ENV_DISABLE_PROMPT=true . $HOME/.python3-env/bin/activate
+fi
+
+# gradle
+if [ -d "/opt/gradle/gradle" ] ; then
+    PATH="/opt/gradle/gradle/bin:${PATH}"
 fi
 
 # Terraform
@@ -301,11 +322,15 @@ export GPG_TTY
 # Keychain ssh key management
 if command -v keychain >/dev/null 2>&1; then
     # export KEYCHAIN_DEBUG=1
-    keychain -q --agents gpg,ssh --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` google_compute_engine 299B947C
-    # keychain --agents gpg,ssh --quiet --timeout 180 `find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f "` 299B947C google_compute_engine
-    [ -z "$HOSTNAME" ] && HOSTNAME=`uname -n`
+    keychain -q --agents gpg,ssh --timeout 180 $(find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f ") google_compute_engine 299B947C
+    # keychain --agents gpg,ssh --quiet --timeout 180 $(find ~/.ssh -type f -name "id_*" ! -name "*.*" -printf "%f ") 299B947C google_compute_engine
+    [ -z "$HOSTNAME" ] && HOSTNAME=$(uname -n)
     [ -f $HOME/.keychain/$HOSTNAME-sh ] && \
        . $HOME/.keychain/$HOSTNAME-sh
     [ -f $HOME/.keychain/$HOSTNAME-sh-gpg ] && \
        . $HOME/.keychain/$HOSTNAME-sh-gpg
+fi
+
+if [ -e "$HOME/.bashrc_local" ]; then
+    . "$HOME/.bashrc_local"
 fi

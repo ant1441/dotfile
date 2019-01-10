@@ -57,9 +57,14 @@ if dein#load_state(expand('~/.vim/bundles'))
     let g:terraform_fold_sections=1
   endif
 
+  " Javascript
+  " call dein#add('isRuslan/vim-es6')
+  " https://davidosomething.com/blog/vim-for-javascript/
+  call dein#add('othree/yajs')
+
   " Java
   if executable('javac')
-    call dein#add('artur-shaik/vim-javacomplete2')
+    " call dein#add('artur-shaik/vim-javacomplete2')
   endif
   " Scala
   if executable('sbt')
@@ -78,6 +83,7 @@ if dein#load_state(expand('~/.vim/bundles'))
     call dein#add('fatih/vim-go')
     let g:go_metalinter_autosave = 1
     let g:go_fmt_command = "goimports"
+    let g:go_info_mode = 'guru'
   endif
 
   " Rust
@@ -86,7 +92,7 @@ if dein#load_state(expand('~/.vim/bundles'))
     call dein#add('mattn/webapi-vim')
     call dein#add('racer-rust/vim-racer')
     " let g:rustfmt_autosave = 1
-    let g:racer_cmd = "~/.cargo/bin/racer"
+    let g:racer_cmd = "$HOME/.cargo/bin/racer"
     let g:racer_experimental_completer = 1
   endif
 
@@ -223,6 +229,9 @@ endif
 
 set wildignore+=*/.git/*,*/tmp/*,*.swp
 let g:ctrlp_custom_ignore = { 'dir':  'vendor$\|node_modules$' }
+
+" Shortcut for using CtrlP to search tags
+nnoremap <leader>. :CtrlPTag<cr>
 
 " NeoComplete config
 let g:acp_enableAtStartup = 0               " Disable AutoComplPop.
