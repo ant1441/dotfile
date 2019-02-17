@@ -66,7 +66,6 @@ fi
 # Check if we have SCM branch functions defined
 if ! ( [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ] ); then
 # if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
-    echo "NO __git_ps1"
     __git_ps1() { :; }
 fi
 
@@ -248,6 +247,11 @@ fi
 # Helm
 if command -v helm >/dev/null 2>&1; then
     source <(helm completion bash)
+fi
+
+# faas-cli
+if command -v faas-cli >/dev/null 2>&1; then
+    source <(faas-cli bashcompletion /proc/self/fd/1)
 fi
 
 # RVM

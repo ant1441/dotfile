@@ -8,13 +8,16 @@
     ~/.gitconfig: gitconfig
     ~/.git-completion.bash: git-completion.bash
     ~/.git_global_ignore: git_global_ignore
+    ~/.git-prompt.sh: git-prompt.sh
+    ~/.npmrc: npmrc
+    ~/.ripgreprc: ripgreprc
     ~/.ssh/config:
         path: ssh/config
         create: true
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
     ~/.zshrc: zshrc
-    ~/bin:
-        path: bin/
-        create: true
+    #~/bin:
+    #    path: bin/
+    #    create: true
     ~/.config/flake8: flake8
