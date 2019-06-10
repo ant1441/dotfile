@@ -1,23 +1,24 @@
 - clean: ['~']
 
 - link:
-    ~/.profile: profile
+    ~/.bash_aliases: bash_aliases
     ~/.bash_profile: bash_profile
     ~/.bashrc: bashrc
-    ~/.bash_aliases: bash_aliases
-    ~/.gitconfig: gitconfig
+    ~/.config/flake8: flake8
     ~/.git-completion.bash: git-completion.bash
+    ~/.gitconfig: gitconfig
     ~/.git_global_ignore: git_global_ignore
     ~/.git-prompt.sh: git-prompt.sh
+    ~/.golangci.yml: golangci.yml
     ~/.npmrc: npmrc
+    ~/.profile: profile
     ~/.ripgreprc: ripgreprc
-    ~/.ssh/config:
-        path: ssh/config
-        create: true
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
     ~/.zshrc: zshrc
     #~/bin:
     #    path: bin/
     #    create: true
-    ~/.config/flake8: flake8
+    #~/.ssh/config:
+    #    path: ssh/config
+    #    create: true

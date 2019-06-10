@@ -170,9 +170,14 @@ goci()
                 go_packages=$(go list ./... | grep -v /vendor/)
                 echo "Go Packages: $go_packages"
                 go build $GO_CI_BUILD_ARGS
-                echo testing...
-                go test -failfast -v $go_packages
-                if command -v golint >/dev/null 2>&1; then
+                echo built, now testing...
+                #go test -failfast -v $go_packages
+                # https://github.com/kyoh86/richgo
+                richgo test -failfast -v $go_packages
+                if command -v golangci-lint >/dev/null 2>&1; then
+                    echo "linting...."
+                    golangci-lint run ${GO_CI_LINT_ARGS:---fast} # --enable-all
+                elif command -v golint >/dev/null 2>&1; then
                     echo linting...
                     golint -set_exit_status $go_packages
                 fi
