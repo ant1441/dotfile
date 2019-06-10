@@ -1,17 +1,37 @@
+build-essential
 curl
-tree
+git
+htop
+iotop
+jq
 moreutils
-
-docker-ce
+python3-venv
+tmux
+tree
+ubuntu-restricted-extras
 vim-gtk
+net-tools
+
+docker-ce # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+
+cmake
+
+snap:
+ - ngrok
+
+Vim:
  - dein
  - ~/.vimrc
-python3-venv
+Python:
  - jupyter
  - requests
- - yq
- - python-ceritfi (maybe)
-git
+ - httpie
+ - matplotlib
+ - numpy
+ - pandas
+ - seaborn
+ # - yq
+ # - python-ceritfi (maybe)
 Rust
  - cargo-update
   - libssl-dev
@@ -20,10 +40,9 @@ Rust
  _ racer
  - loc
  - hexyl
-jq
 go
  - vim-go (:GoInstallBinaries)
  - github.com/tomnomnom/gron
-htop
-grepcidr
+node
+ - livedown
 shellcheck
