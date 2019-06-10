@@ -18,9 +18,12 @@ if dein#load_state(expand('~/.vim/bundles'))
   " call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
   " Code snippet suggestions
-  call dein#add('Shougo/neocomplete.vim')
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
+  " call dein#add('Shougo/neocomplete.vim')
+  " call dein#add('Shougo/neosnippet.vim')
+  " call dein#add('Shougo/neosnippet-snippets')
+
+  " Trialing TabNine completion
+  call dein#add('zxqfl/tabnine-vim')
 
   " Appearance
   call dein#add('vim-airline/vim-airline')
@@ -43,6 +46,10 @@ if dein#load_state(expand('~/.vim/bundles'))
 
   " Git wrapper
   call dein#add('tpope/vim-fugitive')
+  " Github
+  call dein#add('tpope/vim-rhubarb')
+  " Gitlab
+  call dein#add('shumphrey/fugitive-gitlab.vim')
 
   " TOML
   call dein#add('cespare/vim-toml')

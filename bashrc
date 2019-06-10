@@ -218,42 +218,6 @@ if command -v go >/dev/null 2>&1; then
     fi
 fi
 
-# Kubernetes
-if command -v kubectl >/dev/null 2>&1; then
-    # We cache the output to speed up bash startup
-    if [ ! -e /tmp/kubectl_completion ]; then
-        kubectl completion bash > /tmp/kubectl_completion
-    fi
-    source <(cat /tmp/kubectl_completion)
-fi
-
-if command -v linkerd >/dev/null 2>&1; then
-    source <(linkerd completion bash)
-fi
-
-if command -v ark >/dev/null 2>&1; then
-    source <(ark completion bash)
-fi
-
-if command -v kubeless >/dev/null 2>&1; then
-    source <(kubeless completion bash)
-fi
-
-# Minikube
-if command -v minikube >/dev/null 2>&1; then
-    source <(minikube completion bash)
-fi
-
-# Helm
-if command -v helm >/dev/null 2>&1; then
-    source <(helm completion bash)
-fi
-
-# faas-cli
-if command -v faas-cli >/dev/null 2>&1; then
-    source <(faas-cli bashcompletion /proc/self/fd/1)
-fi
-
 # RVM
 if [ -d ~/.rvm/bin ]; then
     export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
@@ -276,9 +240,6 @@ if [ -d "$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib
     export RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/"
 elif [ -d "$HOME/Documents/rust/rust" ] ; then
     export RUST_SRC_PATH="$HOME/Documents/rust/rust/src"
-fi
-if command -v rustup >/dev/null 2>&1; then
-    source <(rustup completions bash)
 fi
 
 if command -v rg >/dev/null 2>&1; then
@@ -312,10 +273,7 @@ if command -v vault >/dev/null 2>&1; then
     complete -C /home/ahodgen/.local/bin/vault vault
 fi
 
-# Digital Ocean
-if command -v doctl >/dev/null 2>&1; then
-    source <(doctl completion bash)
-fi
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # TODO Figure out keychain with gpg
 
@@ -338,3 +296,25 @@ fi
 if [ -e "$HOME/.bashrc_local" ]; then
     . "$HOME/.bashrc_local"
 fi
+
+__cmd_source() {
+    cmd_name=$1
+    if command -v $cmd_name >/dev/null 2>&1; then
+        # We cache the output to speed up bash startup
+        if [ ! -e /tmp/${cmd_name}_completion ]; then
+            "$@" > /tmp/${cmd_name}_completion
+        fi
+        source <(cat /tmp/${cmd_name}_completion)
+    fi
+}
+
+__cmd_source kubectl completion bash
+__cmd_source linkerd completion bash
+__cmd_source kubeless completion bash
+__cmd_source ark completion bash
+__cmd_source velero completion bash
+__cmd_source minikube completion bash
+__cmd_source helm completion bash
+__cmd_source faas-cli completions bash
+__cmd_source rustup completions bash
+__cmd_source doctl completion bash
