@@ -4,7 +4,7 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/ahodgen/.vim/bundles/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/.vim/bundles/repos/github.com/Shougo/dein.vim
 
 " Required:
 if dein#load_state(expand('~/.vim/bundles'))
@@ -82,8 +82,9 @@ if dein#load_state(expand('~/.vim/bundles'))
   if executable('go')
     call dein#add('fatih/vim-go')
     let g:go_metalinter_autosave = 1
-    let g:go_fmt_command = "goimports"
-    let g:go_info_mode = 'guru'
+    "let g:go_fmt_command = "goimports"
+    "let g:go_info_mode = 'guru'
+    let g:go_metalinter_command = 'golangci-lint'
   endif
 
   " Rust

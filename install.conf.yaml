@@ -8,9 +8,10 @@
     ~/.gitconfig: gitconfig
     ~/.git-completion.bash: git-completion.bash
     ~/.git_global_ignore: git_global_ignore
-    ~/.ssh/config:
-        path: ssh/config
-        create: true
+    ~/.golangci.yml: golangci.yml
+    #~/.ssh/config:
+    #    path: ssh/config
+    #    create: true
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
     ~/.zshrc: zshrc
