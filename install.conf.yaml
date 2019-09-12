@@ -12,6 +12,7 @@
     #~/.ssh/config:
     #    path: ssh/config
     #    create: true
+    ~/.jq: jq
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
     ~/.zshrc: zshrc
