@@ -27,3 +27,5 @@
     padd = add -p
 [include]
     path = ~/.gitconfig_local
+[init]
+    defaultBranch = main
