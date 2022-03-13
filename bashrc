@@ -308,13 +308,14 @@ __cmd_source() {
     fi
 }
 
-__cmd_source kubectl completion bash
-__cmd_source linkerd completion bash
-__cmd_source kubeless completion bash
 __cmd_source ark completion bash
-__cmd_source velero completion bash
-__cmd_source minikube completion bash
-__cmd_source helm completion bash
-__cmd_source faas-cli completions bash
-__cmd_source rustup completions bash
+__cmd_source diesel completions bash
 __cmd_source doctl completion bash
+__cmd_source faas-cli completions bash
+__cmd_source helm completion bash
+__cmd_source kubectl completion bash
+__cmd_source kubeless completion bash
+__cmd_source linkerd completion bash
+__cmd_source minikube completion bash
+__cmd_source rustup completions bash
+__cmd_source velero completion bash
