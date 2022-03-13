@@ -5,6 +5,7 @@
     ~/.bash_profile: bash_profile
     ~/.bashrc: bashrc
     ~/.config/flake8: flake8
+    ~/.gdbinit: gdbinit
     ~/.git-completion.bash: git-completion.bash
     ~/.gitconfig: gitconfig
     ~/.git_global_ignore: git_global_ignore
