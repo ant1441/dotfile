@@ -1,0 +1,4 @@
+set ideajoin
+imap jk <Esc>
+imap kj <Esc>
+test timeoutlen=1000

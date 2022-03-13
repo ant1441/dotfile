@@ -11,10 +11,11 @@
     ~/.git_global_ignore: git_global_ignore
     ~/.git-prompt.sh: git-prompt.sh
     ~/.golangci.yml: golangci.yml
+    ~/.ideavimrc: ideavimrc
+    ~/.jq: jq
     ~/.npmrc: npmrc
     ~/.profile: profile
     ~/.ripgreprc: ripgreprc
-    ~/.jq: jq
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
     #~/bin:
