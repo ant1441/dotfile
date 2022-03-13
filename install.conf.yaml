@@ -17,7 +17,6 @@
     ~/.jq: jq
     ~/.tmux.conf: tmux.conf
     ~/.vimrc: vimrc
-    ~/.zshrc: zshrc
     #~/bin:
     #    path: bin/
     #    create: true
