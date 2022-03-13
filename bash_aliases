@@ -11,6 +11,7 @@ alias vi='vim'
 # Go alias for rg
 alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
 alias rgjava="rg -t java -g '!*test*'"
+alias rgnode="rg -t js -t ts -g '!*node_modules*'"
 
 # Navigation
 # take care aliasing cd, easy potential for infinite loops
@@ -143,6 +144,7 @@ EOF
 alias pvim='vim +":setlocal buftype=nofile" -'
 alias pvim_yaml='vim +":setlocal buftype=nofile filetype=yaml" -'
 alias pvim_json='vim +":setlocal buftype=nofile filetype=json" -'
+alias pvim_rust='vim +":setlocal buftype=nofile filetype=rust" -'
 
 goci()
 {
