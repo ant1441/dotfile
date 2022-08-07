@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+. $(dirname $BASH_SOURCE)/lib.sh
+. $(dirname $BASH_SOURCE)/../install.conf.sh
+
+ret=0
+
+if !command -v rustup >/dev/null 2>&1; then
+    log "Installing rustup"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+else
+    log_no_change "rustup already installed"
+fi
+
+is_installed() {
+    bin=$1
+    cargo install --list | grep ':$' | cut -d' ' -f1 | grep -Fxq "${bin}"
+}
+
+for bin in ${CARGO_BINARIES[@]}; do
+    if ! is_installed "${bin}"; then
+        log "Installing Cargo binary '${bin}'"
+        cargo install --quiet ${bin}
+        ret=$((ret + $?))
+    else
+        log_no_change "${bin} already installed"
+    fi
+done
+
+exit $ret

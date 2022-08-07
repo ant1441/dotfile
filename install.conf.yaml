@@ -31,3 +31,10 @@
     #~/.ssh/config:
     #    path: ssh/config
     #    create: true
+
+- shell:
+  - command: ./custom/rust
+    description: Setting up Rust
+    quiet: true
+    stdout: true
+    stderr: true
