@@ -302,6 +302,8 @@ __cmd_source minikube completion bash
 __cmd_source rustup completions bash
 __cmd_source velero completion bash
 
+source <(rustup completions bash cargo)
+
 if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
 fi
