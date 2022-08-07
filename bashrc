@@ -241,10 +241,8 @@ if [ -d "$HOME/.cargo/bin" ] ; then
     export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=$(rustc +nightly --print sysroot)/lib:$LD_LIBRARY_PATH
 fi
-if [ -d "$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/" ] ; then
-    export RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/"
-elif [ -d "$HOME/Documents/rust/rust" ] ; then
-    export RUST_SRC_PATH="$HOME/Documents/rust/rust/src"
+if [ -d "$(rustc --print sysroot)/lib/rustlib/src/rust/src" ] ; then
+    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
 if command -v rg >/dev/null 2>&1; then
