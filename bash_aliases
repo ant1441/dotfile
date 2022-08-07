@@ -83,8 +83,6 @@ git_remote_state ()
 
 # Git branch bash completion https://gist.github.com/JuggoPop/10706934
 if [ -f ~/.git-completion.bash ]; then
-    . ~/.git-completion.bash
-
     # Add git completion to aliases
     alias g='git'
     __git_complete g __git_main
