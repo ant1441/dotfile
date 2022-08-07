@@ -1,4 +1,8 @@
 set ideajoin
+set hlsearch
 imap jk <Esc>
 imap kj <Esc>
+nnoremap g; :action JumpToLastChange<Enter>
+nnoremap g, :action JumpToNextChange<Enter>
+
 test timeoutlen=1000
