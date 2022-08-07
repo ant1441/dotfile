@@ -1,4 +1,5 @@
 .syntastic_cpp_config
+.idea/
 
 # Created by https://www.toptal.com/developers/gitignore/api/vim,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=vim,intellij
