@@ -80,6 +80,10 @@ if ! ([ -n "$(type -t __kubectx_ps1)" ] && [ "$(type -t __kubectx_ps1)" = functi
             exit
         fi
         cur_ctx=$(kubectl config view -o=jsonpath='{.current-context}')
+        if [ -z "${cur_ctx}" ]; then
+            # If we don't have a context, quit
+            exit
+        fi
 
         k8sstring="$cur_ctx"
 
