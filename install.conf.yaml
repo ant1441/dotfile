@@ -1,23 +1,29 @@
 - clean: ['~']
 
 - link:
+    # bash
     ~/.bash_aliases: bash_aliases
     ~/.bash_profile: bash_profile
     ~/.bashrc: bashrc
-    ~/.config/flake8: flake8
-    ~/.gdbinit: gdbinit
+    ~/.profile: profile
+    # Git
     ~/.git-completion.bash: git-completion.bash
     ~/.gitconfig: gitconfig
     ~/.git_global_ignore: git_global_ignore
     ~/.git-prompt.sh: git-prompt.sh
+    # Python
+    ~/.config/flake8: flake8
+    # Go
     ~/.golangci.yml: golangci.yml
-    ~/.ideavimrc: ideavimrc
+    # Tools
     ~/.jq: jq
-    ~/.npmrc: npmrc
-    ~/.profile: profile
     ~/.ripgreprc: ripgreprc
     ~/.tmux.conf: tmux.conf
+    ~/.gdbinit: gdbinit
+    # Editor
     ~/.vimrc: vimrc
+    ~/.ideavimrc: ideavimrc
+    ~/.config/nvim/init.vim: neovim/init.vim
     #~/bin:
     #    path: bin/
     #    create: true
