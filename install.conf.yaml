@@ -24,6 +24,7 @@
     ~/.vimrc: vimrc
     ~/.ideavimrc: ideavimrc
     ~/.config/nvim/init.vim: neovim/init.vim
+    ~/.config/nvim/lua: neovim/lua
     #~/bin:
     #    path: bin/
     #    create: true
