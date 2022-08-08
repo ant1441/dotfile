@@ -1,3 +1,5 @@
+local lspconfig = require('lspconfig')
+
 -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
 --     capabilities = capabilities
@@ -44,3 +46,14 @@ require("rust-tools").setup({
         on_attach = lsp_attach,
     }
 })
+
+lspconfig.yamlls.setup {
+  settings = {
+    yaml = {
+      schemas = {
+        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+        ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = ".gitlab-ci.yml",
+      },
+    },
+  }
+}

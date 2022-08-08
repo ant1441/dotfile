@@ -45,4 +45,5 @@ go
  - github.com/tomnomnom/gron
 node
  - livedown
+ - yaml-language-server
 shellcheck
