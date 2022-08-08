@@ -14,8 +14,61 @@ return require('packer').startup(function(use)
     -- use 'Mofiqul/dracula.nvim'
     use "EdenEast/nightfox.nvim"
 
-    -- Editor
+    -- LSP
+    use {
+        'neovim/nvim-lspconfig',
+        -- config: function()
+        -- end,
+        -- requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    }
+    use {
+        'hrsh7th/nvim-cmp',
+        requires = {
+            {'hrsh7th/cmp-buffer'},
+            {'hrsh7th/cmp-path'},
+            {'hrsh7th/cmp-cmdline'},
 
+            -- Complete from LSP
+            {'hrsh7th/cmp-nvim-lsp'},
+            -- Complete from LSP with function signatures
+            {'hrsh7th/cmp-nvim-lsp-signature-help'},
+
+            -- Complete Snippets from UltiSnips
+            {'quangnguyen30192/cmp-nvim-ultisnips'},
+            -- Complete dictionary words
+            {'uga-rosa/cmp-dictionary'},
+
+            -- LSP icons in completion
+            {'onsails/lspkind.nvim'}
+         },
+         config = function()
+            require('cmp-config')
+         end
+    }
+    -- use {
+    --     'petertriho/cmp-git',
+    --     requires = 'nvim-lua/plenary.nvim'
+    -- }
+
+    -- folke/trouble.nvim
+
+    -- Languages
+    use 'simrat39/rust-tools.nvim'
+
+    -- Snippets
+    use {
+        'SirVer/ultisnips',
+        requires = {{'honza/vim-snippets', rtp = '.'}},
+        -- config = function()
+        --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+        --     vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
+        --     vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
+        --     vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
+        --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
+        -- end
+    }
+
+    -- Editor
     -- Closes brackets. Perfect companion to vim-endwise.
     -- Basically, a more conservative version of auto-pairs that only works when you press Enter.
     -- use '9mm/vim-closer'
@@ -44,7 +97,7 @@ return require('packer').startup(function(use)
         config = function()
             require('galaxyline-config')
         end,
-        -- some optional icons
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+        -- some icons
+        requires = { 'kyazdani42/nvim-web-devicons' },
     }
 end)

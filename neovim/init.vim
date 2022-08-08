@@ -1,6 +1,7 @@
 lua require('plugins')
 
-let mapeader = "," " Rebind <Leader> key
+" Rebind <Leader> key
+let mapleader = ","
 
 " Revert neovim to yank a whole line
 nnoremap Y Y
@@ -64,4 +65,11 @@ inoremap kj <ESC>
 " Spellchecker
 set spelllang=en_gb
 
-set complete+=kspell
+" nvim-cmp
+set completeopt=menu,menuone,noselect
+
+" Will this conflict with nvim-cmp?
+" set complete+=kspell
+
+" Snippets
+let g:snips_author = "adam"

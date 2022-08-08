@@ -12,6 +12,14 @@ else
     log_no_change "rustup already installed"
 fi
 
+# TODO: Rust components #
+# rustup component add rust-src
+
+# TODO: Rust Analyzer #
+# $ mkdir -p ~/.local/bin
+# $ curl -L https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
+# $ chmod +x ~/.local/bin/rust-analyzer
+
 is_installed() {
     bin=$1
     cargo install --list | grep ':$' | cut -d' ' -f1 | grep -Fxq "${bin}"
