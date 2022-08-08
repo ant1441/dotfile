@@ -57,3 +57,5 @@ lspconfig.yamlls.setup {
     },
   }
 }
+
+lspconfig.bashls.setup {}
