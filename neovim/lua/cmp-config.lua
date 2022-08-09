@@ -1,7 +1,6 @@
 -- Setup nvim-cmp.
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
-local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
 local lspkind = require('lspkind')
 
@@ -98,8 +97,3 @@ cmp.setup.filetype('gitcommit', {
     })
 })
 
--- Setup lspconfig.
-
--- The nvim-cmp almost supports LSP's capabilities so you should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = cmp_nvim_lsp.update_capabilities(capabilities)

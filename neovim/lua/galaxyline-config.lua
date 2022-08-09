@@ -4,77 +4,29 @@ local gl = require('galaxyline')
 local gls = gl.section
 
 -- source provider function
-local diagnostic = require('galaxyline.provider_diagnostic')
-local vcs = require('galaxyline.provider_vcs')
 local fileinfo = require('galaxyline.provider_fileinfo')
-local extension = require('galaxyline.provider_extensions')
--- local colors = require('galaxyline.colors')
-local buffer = require('galaxyline.provider_buffer')
-local whitespace = require('galaxyline.provider_whitespace')
-local lspclient = require('galaxyline.provider_lsp')
 
 -- built-in condition
 local condition = require('galaxyline.condition')
 
--- local gps = require('nvim-gps')
--- local dap = require('dap')
--- VistaPlugin = extension.vista_nearest
-
--- gl.short_line_list = {
---     'LuaTree',
---     'NvimTree',
---     'vista',
---     'dbui',
---     'startify',
---     'term',
---     'nerdtree',
---     'fugitive',
---     'fugitiveblame',
---     'plug',
---     'plugins'
--- }
-
--- local ProgFileTypes = {
---     'lua',
---     'python',
---     'typescript',
---     'typescriptreact',
---     'react',
---     'javascript',
---     'javascriptreact',
---     'rust',
---     'go',
---     'html'
--- }
-
--- for checking value in table
--- local function has_value (tab, val)
---     for index, value in ipairs(tab) do
---         if value == val then
---             return true
---         end
---     end
---
---     return false
--- end
-
 local colors = {
-    bg = "#282c34",
-    line_bg = "#353644",
-    fg = '#8FBCBB',
-    fg_green = '#65a380',
+    bg       = "#282c34", -- Left and right
+    line_bg  = "#353644", -- Middle
+    fg       = '#8FBCBB', -- Light green text
 
-    yellow = '#fabd2f',
-    cyan = '#008080',
+    none     = '#ffffff',
+
+    fg_green = '#65a380', -- unused
+    yellow   = '#fabd2f',
+    cyan     = '#008080',
     darkblue = '#081633',
-    green = '#afd700',
-    orange = '#FF8800',
-    purple = '#5d4d7a',
-    magenta = '#c678dd',
-    blue = '#51afef',
-    red = '#ec5f67'
+    green    = '#afd700',
+    orange   = '#FF8800',
+    purple   = '#5d4d7a',
+    magenta  = '#c678dd',
+    blue     = '#51afef',
+    red      = '#ec5f67'
 }
-
 
 local function file_readonly(readonly_icon)
   if vim.bo.filetype == 'help' then
@@ -86,6 +38,7 @@ local function file_readonly(readonly_icon)
   end
   return ''
 end
+
 -- get current file name
 local function get_current_file_name()
   -- local file = vim.fn.expand('%:t')
@@ -103,57 +56,6 @@ local function get_current_file_name()
   return file .. ' '
 end
 
-
-local function lsp_status(status)
-    shorter_stat = ''
-    for match in string.gmatch(status, "[^%s]+")  do
-        err_warn = string.find(match, "^[WE]%d+", 0)
-        if not err_warn then
-            shorter_stat = shorter_stat .. ' ' .. match
-        end
-    end
-    return shorter_stat
-end
-
-
-local function get_coc_lsp()
-  local status = vim.fn['coc#status']()
-  if not status or status == '' then
-      return ''
-  end
-  return lsp_status(status)
-end
-
-
-
--- local function get_debug_status()
---   local status = dap.status()
---   if not status or status == '' then
---       return ''
---   end
---   return  '  ' .. status
--- end
-
-function get_diagnostic_info()
-  if vim.fn.exists('*coc#rpc#start_server') == 1 then
-    return get_coc_lsp()
-    end
-  return ''
-end
-
-local function get_current_func()
-  local has_func, func_name = pcall(vim.api.nvim_buf_get_var, 0, 'coc_current_function')
-  if not has_func then return end
-      return func_name
-  end
-
-function get_function_info()
-  if vim.fn.exists('*coc#rpc#start_server') == 1 then
-    return get_current_func()
-    end
-  return ''
-end
-
 local function trailing_whitespace()
     local trail = vim.fn.search("\\s$", "nw")
     if trail ~= 0 then
@@ -163,34 +65,6 @@ local function trailing_whitespace()
     end
 end
 
--- current_func_status with treesitter
--- local function get_current_func_from_treesitter()
---   local opts = {
---     indicator_size = 100,
---     type_patterns = {'class', 'function', 'method', },
---     transform_fn = function(line) return line:gsub('%s*[%[%(%{]*%s*$', '') end,
---     separator = '  ',
---   }
---   local status = vim.fn['nvim_treesitter#statusline'](opts)
---   if not status or status == '' then
---       return ''
---   end
---       return status
---   end
-
--- local function get_current_context()
---   if vim.fn.exists('nvim_treesitter#statusline') == 1 then
---     return get_current_func_from_treesitter()
---     end
---   return ''
--- end
-
-CocStatus = get_diagnostic_info
--- DebugInfo = get_debug_status
-CocFunc = get_current_func
--- TreesitterContext = get_current_func_from_treesitter
-TrailingWhiteSpace = trailing_whitespace
-
 function has_file_type()
     local f_type = vim.bo.filetype
     if not f_type or f_type == '' then
@@ -199,16 +73,13 @@ function has_file_type()
     return true
 end
 
--- function has_file_prog_filetype()
---     local f_type = vim.bo.filetype
---     if not f_type or f_type == '' then
---         return false
---     end
---     if has_value(ProgFileTypes, f_type) then
---         return true
---     end
---     return false
--- end
+-- Providers
+TrailingWhiteSpace = trailing_whitespace
+GetCurrentFileName = get_current_file_name
+Space = function() return ' ' end
+
+-- Conditions
+HasFileType = has_file_type
 
 -- Layout
 
@@ -216,8 +87,8 @@ gls.left = {
     -- Spacer
     {
         FirstElement = {
-            provider = function() return ' ' end,
-            highlight = {colors.blue, colors.line_bg}
+            provider = Space,
+            highlight = {colors.none, colors.line_bg}
         },
     },
     -- Mode indicator
@@ -263,7 +134,7 @@ gls.left = {
                 vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim_mode])
                 return alias[vim_mode] .. '   '
             end,
-            highlight = {colors.red, colors.line_bg, 'bold'},
+            highlight = {colors.none, colors.line_bg, 'bold'},
         },
     },
     -- Filetype icon
@@ -274,20 +145,19 @@ gls.left = {
             highlight = {fileinfo.get_file_icon_color, colors.line_bg},
         },
     },
-    -- Filesize
+    -- Filename
     {
-        FileName = {
-            provider = {get_current_file_name, 'FileSize'},
-            condition = condition.buffer_not_empty,
+        Filename = {
+            provider = GetCurrentFileName,
             highlight = {colors.fg, colors.line_bg, 'bold'}
         }
     },
-    -- Git marker
+    -- Filesize
     {
-        GitIcon = {
-            provider = function() return '  ' end,
-            condition = condition.check_git_workspace,
-            highlight = {colors.yellow, colors.line_bg},
+        Filesize = {
+            provider = 'FileSize',
+            condition = condition.hide_in_width,
+            highlight = {colors.fg, colors.line_bg, 'bold'}
         }
     },
     -- Git branch
@@ -295,6 +165,7 @@ gls.left = {
         GitBranch = {
             provider = 'GitBranch',
             condition = condition.check_git_workspace,
+            icon = '  ',
             highlight = {colors.yellow, colors.line_bg, 'bold'},
         }
     },
@@ -302,7 +173,9 @@ gls.left = {
     -- Spacer
     {
         Space = {
-            provider = function () return '' end
+            provider = Space,
+            condition = condition.hide_in_width,
+            highlight = {colors.none, colors.line_bg},
         }
     },
 
@@ -311,7 +184,7 @@ gls.left = {
         DiffAdd = {
             provider = 'DiffAdd',
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = '  ',
             highlight = {colors.green, colors.line_bg},
         }
     },
@@ -320,7 +193,7 @@ gls.left = {
         DiffModified = {
             provider = 'DiffModified',
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = '  ',
             highlight = {colors.orange, colors.line_bg},
         }
     },
@@ -329,11 +202,11 @@ gls.left = {
         DiffRemove = {
             provider = 'DiffRemove',
             condition = condition.hide_in_width,
-            icon = '   ',
+            icon = '  ',
             highlight = {colors.red, colors.line_bg},
         }
     },
-    -- Angled Seperator (broken on Ganymede?)
+    -- Angled Seperator
     {
         LeftEnd = {
             provider = function() return '' end,
@@ -347,73 +220,50 @@ gls.left = {
     {
         TrailingWhiteSpace = {
             provider = TrailingWhiteSpace,
-            icon = '   ',
+            condition = condition.hide_in_width,
+            icon = '  ',
             highlight = {colors.yellow, colors.bg},
         }
     },
 
-    -- {
-    --     DiagnosticError = {
-    --         provider = 'DiagnosticError',
-    --         icon = '  ',
-    --         highlight = {colors.red, colors.bg}
-    --     }
-    -- },
-    -- -- Spacer
-    -- {
-    --     Space = {
-    --         provider = function () return '' end
-    --     }
-    -- },
-    -- {
-    --     DiagnosticWarn = {
-    --         provider = 'DiagnosticWarn',
-    --         icon = '   ',
-    --         highlight = {colors.yellow, colors.bg},
-    --     }
-    -- },
+    -- LSP Diagnostics info
+    {
+        DiagnosticError = {
+            provider = 'DiagnosticError',
+            condition = condition.hide_in_width,
+            icon = '  ',
+            highlight = {colors.red, colors.bg}
+        }
+    },
+    {
+        DiagnosticWarn = {
+            provider = 'DiagnosticWarn',
+            condition = condition.hide_in_width,
+            icon = '  ',
+            highlight = {colors.yellow, colors.bg},
+        }
+    },
+    -- Also DiagnosticHint & DiagnosticInfo
 
-    -- {
-    --     CocStatus = {
-    --         provider = CocStatus,
-    --         highlight = {colors.green, colors.bg},
-    --         icon = '   '
-    --     }
-    -- },
-
-
-    -- {
-    --   CocFunc = {
-    --     provider = CocFunc,
-    --     icon = ' ',
-    --     highlight = {colors.yellow, colors.bg},
-    --   }
-    -- },
-
-    -- {
-    --   TreesitterContext = {
-    --     provider = TreesitterContext,
-    --     condition = has_file_prog_filetype,
-    --     icon = '  λ ',
-    --     highlight = {colors.yellow, colors.bg},
-    --   }
-    -- },
-
-    -- {
-    -- nvimGPS = {
-    --         provider = function()
-    --             return gps.get_location()
-    --         end,
-    --         condition = function()
-    --             return gps.is_available()
-    --         end,
-    --         icon = '  ',
-    --         highlight = {colors.yellow, colors.bg},
-    --     }
-    -- }
+    -- Spacer
+    {
+        MiddleSpacer = {
+            provider = Space,
+            highlight = {colors.green, colors.bg}
+        },
+    },
 }
 
 gls.right = {
+    {
+        LSPStatus = {
+            provider = Space,
+            condition = condition.check_active_lsp,
+            highlight = {colors.green, colors.bg},
+            icon = '  ',
+        }
+    },
+
     {
         FileFormat = {
             provider = 'FileFormat',
@@ -422,15 +272,6 @@ gls.right = {
             highlight = {colors.fg, colors.line_bg, 'bold'},
         }
     },
-    -- {
-    --   Debug = {
-    --     provider = DebugInfo,
-    --     separator = ' ',
-    --     separator_highlight = {colors.blue, colors.line_bg},
-    --     separator_highlight = {colors.bg, colors.line_bg},
-    --     highlight = {colors.red, colors.line_bg, 'bold'},
-    --   }
-    -- },
     {
         LineInfo = {
             provider = 'LineColumn',
@@ -454,45 +295,111 @@ gls.right = {
             highlight = {colors.blue, colors.purple},
         }
     },
-
-    -- {
-    --   Vista = {
-    --     provider = VistaPlugin,
-    --     separator = ' ',
-    --     separator_highlight = {colors.bg, colors.line_bg},
-    --     highlight = {colors.fg, colors.line_bg, 'bold'},
-    --   }
-    -- }
-    -- {
-    --     Time = {
-    --         provider = function()
-    --             return '  ' .. os.date('%H:%M') .. ' '
-    --         end,
-    --         highlight = {colors.green, colors.gray},
-    --         separator = ' ',
-    --     }
-    -- },
 }
 
 -- Short line layout
 
-gls.short_line_left[1] = {
-  BufferType = {
-    provider =  'FileTypeName',
-    separator = '',
-    condition = has_file_type,
-    separator_highlight = {colors.purple, colors.bg},
-    highlight = {colors.fg, colors.purple}
-  }
+gls.short_line_left = {
+    {
+        BufferType = {
+            provider =  'FileTypeName',
+            separator = '',
+            condition = HasFileType,
+            separator_highlight = {colors.purple, colors.bg},
+            highlight = {colors.fg, colors.purple}
+        }
+    }
 }
 
-
-gls.short_line_right[1] = {
-  BufferIcon = {
-    provider= 'BufferIcon',
-    separator = '',
-    condition = has_file_type,
-    separator_highlight = {colors.purple, colors.bg},
-    highlight = {colors.fg, colors.purple}
-  }
+gls.short_line_right = {
+    {
+        BufferIcon = {
+            provider= 'BufferIcon',
+            separator = '',
+            condition = HasFileType,
+            separator_highlight = {colors.purple, colors.bg},
+            highlight = {colors.fg, colors.purple}
+        }
+    }
 }
+
+-- Scratch space
+
+-- gl.short_line_list = {
+--     'LuaTree',
+--     'NvimTree',
+--     'vista',
+--     'dbui',
+--     'startify',
+--     'term',
+--     'nerdtree',
+--     'fugitive',
+--     'fugitiveblame',
+--     'plug',
+--     'plugins'
+-- }
+
+-- local ProgFileTypes = {
+--     'lua',
+--     'python',
+--     'typescript',
+--     'typescriptreact',
+--     'react',
+--     'javascript',
+--     'javascriptreact',
+--     'rust',
+--     'go',
+--     'html'
+-- }
+
+-- for checking value in table
+-- local function has_value (tab, val)
+--     for index, value in ipairs(tab) do
+--         if value == val then
+--             return true
+--         end
+--     end
+--
+--     return false
+-- end
+
+-- current_func_status with treesitter
+-- local function get_current_func_from_treesitter()
+--   local opts = {
+--     indicator_size = 100,
+--     type_patterns = {'class', 'function', 'method', },
+--     transform_fn = function(line) return line:gsub('%s*[%[%(%{]*%s*$', '') end,
+--     separator = '  ',
+--   }
+--   local status = vim.fn['nvim_treesitter#statusline'](opts)
+--   if not status or status == '' then
+--       return ''
+--   end
+--       return status
+--   end
+
+-- TreesitterContext = get_current_func_from_treesitter
+
+-- function has_file_prog_filetype()
+--     local f_type = vim.bo.filetype
+--     if not f_type or f_type == '' then
+--         return false
+--     end
+--     if has_value(ProgFileTypes, f_type) then
+--         return true
+--     end
+--     return false
+-- end
+
+-- Scratch Segments:
+
+-- Left
+
+    -- {
+    --   TreesitterContext = {
+    --     provider = TreesitterContext,
+    --     condition = has_file_prog_filetype,
+    --     icon = '  λ ',
+    --     highlight = {colors.yellow, colors.bg},
+    --   }
+    -- },
