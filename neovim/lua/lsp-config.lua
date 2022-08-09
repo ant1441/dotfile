@@ -1,4 +1,9 @@
 local lspconfig = require('lspconfig')
+local cmp_nvim_lsp = require('cmp_nvim_lsp')
+
+-- The nvim-cmp almost supports LSP's capabilities so you should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
@@ -47,15 +52,55 @@ require("rust-tools").setup({
     }
 })
 
-lspconfig.yamlls.setup {
-  settings = {
-    yaml = {
-      schemas = {
-        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-        ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = ".gitlab-ci.yml",
-      },
-    },
-  }
+-- Language specific setup
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
+-- Ansible [ansible-language-server]
+-- lspconfig.ansiblels.setup {}
+
+-- Bash [bash-language-server]
+lspconfig.bashls.setup {
+    capabilities = capabilities,
+    on_attach = lsp_attach,
 }
 
-lspconfig.bashls.setup {}
+-- CSS [vscode-langservers-extracted]
+-- Note: Extra snippet config required
+-- lspconfig.cssls.setup {}
+
+-- Docker [dockerfile-language-server-nodejs]
+-- lspconfig.dockerls.setup{}
+
+-- Javascript [vscode-eslint-language-server]
+-- lspconfig.eslintls.setup{}
+
+-- Go
+-- lspconfig.gopls.setup{}
+
+-- HTML [vscode-langservers-extracted]
+-- Note: Extra snippet config required
+-- lspconfig.htmlls.setup{}
+
+-- Java
+-- JSON
+-- Terraform
+
+-- YAML [yaml-language-server]
+lspconfig.yamlls.setup {
+    capabilities = capabilities,
+    on_attach = lsp_attach,
+    settings = {
+        yaml = {
+            schemas = {
+                ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+                ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] = ".gitlab-ci.yml",
+            },
+        },
+    }
+}
+
+-- Vim [vim-language-server]
+lspconfig.vimls.setup {
+    capabilities = capabilities,
+    on_attach = lsp_attach,
+}
