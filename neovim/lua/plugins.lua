@@ -20,7 +20,6 @@ return require('packer').startup(function(use)
         config = function()
             require('lsp-config')
         end,
-        -- requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     }
     use {
         'hrsh7th/nvim-cmp',
@@ -51,8 +50,6 @@ return require('packer').startup(function(use)
     --     requires = 'nvim-lua/plenary.nvim'
     -- }
 
-    -- folke/trouble.nvim
-
     -- Languages
     use 'simrat39/rust-tools.nvim'
 
@@ -60,26 +57,13 @@ return require('packer').startup(function(use)
     use {
         'SirVer/ultisnips',
         requires = {{'honza/vim-snippets', rtp = '.'}},
-        -- config = function()
-        --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-        --     vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
-        --     vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
-        --     vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
-        --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
-        -- end
     }
 
     -- Editor
-    -- Closes brackets. Perfect companion to vim-endwise.
-    -- Basically, a more conservative version of auto-pairs that only works when you press Enter.
-    -- use '9mm/vim-closer'
-
     -- highlight, navigate, and operate on sets of matching text.
     -- It extends vim's % key to language-specific words instead of just single characters.
     use 'andymass/vim-matchup'
 
-    -- Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
-    -- use 'dense-analysis/ale'
 
     -- Git integration
     use {
@@ -101,4 +85,31 @@ return require('packer').startup(function(use)
         -- some icons
         requires = { 'kyazdani42/nvim-web-devicons' },
     }
+
+    -- Scratch space
+    -- Find, Filter, Preview, Pick. All lua, all the time.
+    -- nvim-telescope/telescope.nvim
+
+    -- folke/trouble.nvim
+
+    -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua.
+    -- jose-elias-alvarez/null-ls.nvim
+
+    -- Simple winbar/statusline plugin that shows your current code context
+    -- SmiteshP/nvim-navic
+
+    -- Viewer & Finder for LSP symbols and tags
+    -- liuchengxu/vista.vim
+
+    -- Portable package manager for Neovim that runs everywhere Neovim runs.
+    -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
+    -- williamboman/mason.nvim
+
+    -- Closes brackets. Perfect companion to vim-endwise.
+    -- Basically, a more conservative version of auto-pairs that only works when you press Enter.
+    -- use '9mm/vim-closer'
+
+    -- Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
+    -- use 'dense-analysis/ale'
+
 end)
