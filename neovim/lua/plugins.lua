@@ -92,6 +92,14 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons' },
     }
 
+    use {
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.0',
+        requires = {
+            'nvim-lua/plenary.nvim',
+        },
+    }
+
     -- Scratch space
     -- Find, Filter, Preview, Pick. All lua, all the time.
     -- nvim-telescope/telescope.nvim

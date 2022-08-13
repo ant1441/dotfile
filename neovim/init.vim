@@ -76,3 +76,5 @@ set shortmess+=c
 
 " Snippets
 let g:snips_author = "adam"
+
+:nnoremap <C-p> :Telescope find_files<cr>
