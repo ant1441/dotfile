@@ -49,6 +49,12 @@ return require('packer').startup(function(use)
     --     'petertriho/cmp-git',
     --     requires = 'nvim-lua/plenary.nvim'
     -- }
+    use {
+        'j-hui/fidget.nvim',
+        config = function()
+            require('fidget').setup {}
+        end
+    }
 
     -- Languages
     use 'simrat39/rust-tools.nvim'
