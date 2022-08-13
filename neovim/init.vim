@@ -68,6 +68,9 @@ set spelllang=en_gb
 " nvim-cmp
 set completeopt=menu,menuone,noselect
 
+" Avoid showing extra messages when using completion
+set shortmess+=c
+
 " Will this conflict with nvim-cmp?
 " set complete+=kspell
 
