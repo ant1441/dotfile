@@ -100,6 +100,8 @@ return require('packer').startup(function(use)
         },
     }
 
+    use 'stevearc/dressing.nvim'
+
     -- Scratch space
     -- Find, Filter, Preview, Pick. All lua, all the time.
     -- nvim-telescope/telescope.nvim
