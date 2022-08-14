@@ -91,6 +91,8 @@ return require('packer').startup(function(use)
     -- It extends vim's % key to language-specific words instead of just single characters.
     use 'andymass/vim-matchup'
 
+    -- Highlight RGB, css colours
+    use 'NvChad/nvim-colorizer.lua'
 
     -- Git integration
     use {
