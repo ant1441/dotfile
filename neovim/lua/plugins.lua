@@ -14,6 +14,20 @@ return require('packer').startup(function(use)
     -- use 'Mofiqul/dracula.nvim'
     use 'EdenEast/nightfox.nvim'
 
+    use {
+        'romgrk/barbar.nvim',
+        requires = {'kyazdani42/nvim-web-devicons'},
+        config = function()
+            require('bufferline').setup {
+                animation = false,
+                auto_hide = true,
+                icon_custom_colors = true,
+                -- This icon should be nf-mdi-pin, but it doesn't work?
+                -- icon_pinned = '車',
+            }
+        end,
+    }
+
     -- LSP
     use {
         'neovim/nvim-lspconfig',
