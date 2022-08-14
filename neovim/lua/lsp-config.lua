@@ -1,5 +1,6 @@
 local lspconfig = require('lspconfig')
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
+local navic = require("nvim-navic")
 
 -- The nvim-cmp almost supports LSP's capabilities so you should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -20,6 +21,7 @@ vim.diagnostic.config({
 
 -- Examples at https://gist.github.com/equalis3r/ca1fe0266b18be5893b2d9605b492a3b
 local lsp_attach = function(client, buf)
+    navic.attach(client, buf)
 
     -- LSP actions
     -- Could use which-key.nvim?

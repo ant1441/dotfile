@@ -125,8 +125,11 @@ return require('packer').startup(function(use)
         config = function()
             require('galaxyline-config')
         end,
-        -- some icons
-        requires = { 'kyazdani42/nvim-web-devicons' },
+        requires = {
+            -- some icons
+            'kyazdani42/nvim-web-devicons',
+            'SmiteshP/nvim-navic'
+        },
     }
 
     use {
@@ -157,9 +160,6 @@ return require('packer').startup(function(use)
     -- nvim-treesitter/nvim-treesitter
 
     -- folke/trouble.nvim
-
-    -- Simple winbar/statusline plugin that shows your current code context
-    -- SmiteshP/nvim-navic
 
     -- Viewer & Finder for LSP symbols and tags
     -- liuchengxu/vista.vim

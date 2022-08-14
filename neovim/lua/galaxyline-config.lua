@@ -5,6 +5,7 @@ local gls = gl.section
 
 -- source provider function
 local fileinfo = require('galaxyline.provider_fileinfo')
+local navic = require("nvim-navic")
 
 -- built-in condition
 local condition = require('galaxyline.condition')
@@ -76,10 +77,29 @@ end
 -- Providers
 TrailingWhiteSpace = trailing_whitespace
 GetCurrentFileName = get_current_file_name
+GetLocationContext = function()
+    return navic.get_location()
+end
 Space = function() return ' ' end
 
 -- Conditions
 HasFileType = has_file_type
+IsNotUnix = function()
+    if fileinfo.get_file_format() == "UNIX" then
+        return false
+    end
+    return true
+end
+HideIfWidth = function(width)
+  local squeeze_width  = vim.fn.winwidth(0) / 2
+  if squeeze_width > width then
+    return true
+  end
+  return false
+end
+ShowLocationContext = function()
+    return navic.is_available() and HideIfWidth(40)
+end
 
 -- Layout
 
@@ -256,26 +276,41 @@ gls.left = {
 
 gls.right = {
     {
-        LSPStatus = {
-            provider = Space,
-            condition = condition.check_active_lsp,
+        LocationContext = {
+            provider = GetLocationContext,
+            condition = ShowLocationContext,
             highlight = {colors.green, colors.bg},
-            icon = '  ',
         }
     },
 
     {
+        LSPStatus = {
+            provider = Space,
+            condition = condition.check_active_lsp,
+            highlight = {colors.green, colors.bg},
+            separator_highlight = {colors.bg, colors.bg},
+            icon = '  ',
+            separator = ' ',
+        }
+    },
+
+    {
+        RightStart = {
+            provider = function() return '' end,
+            separator_highlight = {colors.bg, colors.line_bg},
+            highlight = {colors.bg, colors.line_bg}
+        }
+    },
+    {
         FileFormat = {
             provider = 'FileFormat',
-            separator = ' ',
-            separator_highlight = {colors.bg, colors.line_bg},
+            condition = IsNotUnix,
             highlight = {colors.fg, colors.line_bg, 'bold'},
         }
     },
     {
         LineInfo = {
-            provider = 'LineColumn',
-            separator = ' | ',
+            provider = {Space, 'LineColumn'},
             separator_highlight = {colors.blue, colors.line_bg},
             highlight = {colors.fg, colors.line_bg},
         },
