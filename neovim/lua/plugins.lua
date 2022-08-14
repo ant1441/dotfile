@@ -12,7 +12,7 @@ return require('packer').startup(function(use)
 
     -- Colorschemes
     -- use 'Mofiqul/dracula.nvim'
-    use "EdenEast/nightfox.nvim"
+    use 'EdenEast/nightfox.nvim'
 
     -- LSP
     use {
@@ -80,7 +80,10 @@ return require('packer').startup(function(use)
     -- Snippets
     use {
         'SirVer/ultisnips',
-        requires = {{'honza/vim-snippets', rtp = '.'}},
+        requires = {
+            'honza/vim-snippets',
+            rtp = '.'
+        },
     }
 
     -- Editor
@@ -121,19 +124,24 @@ return require('packer').startup(function(use)
     use 'stevearc/dressing.nvim'
 
     -- Scratch space
-    -- Find, Filter, Preview, Pick. All lua, all the time.
-    -- nvim-telescope/telescope.nvim
+    -- Interesting stuff https://github.com/rockerBOO/awesome-neovim
+
+    -- Nvim Treesitter configurations and abstraction layer
+    -- Experimental, so not just yet
+    -- nvim-treesitter/nvim-treesitter
 
     -- folke/trouble.nvim
-
-    -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua.
-    -- jose-elias-alvarez/null-ls.nvim
 
     -- Simple winbar/statusline plugin that shows your current code context
     -- SmiteshP/nvim-navic
 
     -- Viewer & Finder for LSP symbols and tags
     -- liuchengxu/vista.vim
+
+    -- A file explorer tree for neovim written in lua
+    -- kyazdani42/nvim-tree.lua
+    -- A tree explorer plugin for vim.
+    -- preservim/nerdtree
 
     -- Portable package manager for Neovim that runs everywhere Neovim runs.
     -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
@@ -146,4 +154,7 @@ return require('packer').startup(function(use)
     -- Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
     -- use 'dense-analysis/ale'
 
+    -- A better user experience for viewing and interacting with Vim marks.
+    -- I don't use marks often, maybe this would help?
+    -- chentoast/marks.nvim
 end)

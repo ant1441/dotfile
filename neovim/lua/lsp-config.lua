@@ -20,10 +20,9 @@ vim.diagnostic.config({
 
 -- Examples at https://gist.github.com/equalis3r/ca1fe0266b18be5893b2d9605b492a3b
 local lsp_attach = function(client, buf)
-    -- Example maps, set your own with vim.api.nvim_buf_set_keymap(buf, "n", <lhs>, <rhs>, { desc = <desc> })
-    -- or a plugin like which-key.nvim
 
     -- LSP actions
+    -- Could use which-key.nvim?
 
     -- Pres 'K' twice to jump into the Hover window
     vim.api.nvim_buf_set_keymap(buf, "n", "K",          "<Cmd>lua vim.lsp.buf.hover()<CR>",            { desc = "Hover Info" })
