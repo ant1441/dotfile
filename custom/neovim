@@ -4,6 +4,7 @@
 . $(dirname $BASH_SOURCE)/../install.conf.sh
 
 packer_path="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+python_venv_path="$HOME/.neovim-env"
 
 if [ -d "$packer_path" ]
 then
@@ -12,6 +13,15 @@ else
     log "Installing Packer"
     git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_path"
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+fi
+
+if [ -d "$python_venv_path" ]
+then
+    log_no_change "Python virtualenv already installed"
+else
+    log "Installing Python virtualenv"
+    python3 -mvenv "$python_venv_path"
+    "$python_venv_path"/bin/pip install neovim
 fi
 
 if [ -f "$HOME/.fonts/Inconsolata Regular Nerd Font Complete.ttf" ]

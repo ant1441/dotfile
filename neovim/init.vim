@@ -79,3 +79,10 @@ let g:snips_author = "adam"
 
 :nnoremap <C-p> :Telescope find_files<cr>
 :nnoremap "" :Telescope registers<cr>
+
+if isdirectory(expand('~/.neovim-env'))
+    let g:python3_host_prog = expand('~/.neovim-env/bin/python')
+else
+    lua vim.notify('failed to find NeoVim python virtualenv', vim.log.levels.ERROR)
+    " python -m venv .neovim-env
+endif
