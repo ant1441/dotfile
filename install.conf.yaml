@@ -1,6 +1,8 @@
 - clean: ['~']
 
 - link:
+    # aws
+    ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
     # bash
     ~/.bash_aliases: bash_aliases
     ~/.bash_profile: bash_profile

@@ -60,7 +60,13 @@ case "$TERM" in
 esac
 
 if [ -f ~/.git-prompt.sh ]; then
+    # From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
     . ~/.git-prompt.sh
+fi
+
+if [ -f ~/.git-completion.bash ]; then
+    # From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+    . ~/.git-completion.bash
 fi
 
 # Check if we have SCM branch functions defined
@@ -69,9 +75,23 @@ if ! ( [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ] );
     __git_ps1() { :; }
 fi
 
+__aws_profile_ps1() {
+    local printf_format=' [%s]';
+
+    if [[ -z "${AWS_PROFILE}" ]]; then
+        exit
+    fi
+
+    printf -- "$printf_format" "${AWS_PROFILE}"
+}
+
 # Check if we have kubectx_ps1 functions defined
 if ! ([ -n "$(type -t __kubectx_ps1)" ] && [ "$(type -t __kubectx_ps1)" = function ]); then
     __kubectx_ps1() {
+        # If we haven't done anything with k8s in the last 20 commands, mute
+        if ! history | tail -n 20 | grep --quiet -P '(kubectl|kctx|kns)'; then
+            return;
+        fi
         local printf_format=' [%s]';
         local k8sstring
         local cur_ctx
@@ -123,7 +143,12 @@ if [ "$color_prompt" = yes ]; then
     if [ "$nice_colours" = yes ]; then
         PS1='${debian_chroot:+($debian_chroot)}\[${bldgrn}\]\u\[${NC}\]:\[${bldblu}\]\w\[${NC}\]\[${bldylw}\]$(__kubectx_ps1)\[${NC}\]\[\033[33m\]$(__git_ps1)\[${NC}\]\$ '
     else
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[34m\]$(__kubectx_ps1)\[\033[00m\]\[\033[33m\]$(__git_ps1)\[\033[00m\]\$ '
+        PS1='${debian_chroot:+($debian_chroot)}'
+        PS1="${PS1}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
+        PS1="${PS1}\[\033[34m\]\$(__kubectx_ps1)\[\033[00m\]"
+        PS1="${PS1}\[\033[35m\]\$(__aws_profile_ps1)\[\033[00m\]"
+        PS1="${PS1}\[\033[33m\]\$(__git_ps1)\[\033[00m\]\$ "
+        # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[34m\]$(__kubectx_ps1)\[\033[00m\]\[\033[33m\]$(__git_ps1)\[\033[00m\]\$ '
     fi
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -215,13 +240,11 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 fi
 
 # Rust
-if [ -d "$HOME/.cargo/bin" ] ; then
-    PATH="$HOME/.cargo/bin:${PATH}"
-    export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=$(rustc +nightly --print sysroot)/lib:$LD_LIBRARY_PATH
-fi
-if [ -d "$(rustc --print sysroot)/lib/rustlib/src/rust/src" ] ; then
-    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+if [ -d "$HOME/.cargo/env" ] ; then
+    . "$HOME/.cargo/env"
+
+    # Use a centralised cargo Target dir to reduce disk usage
+    export CARGO_TARGET_DIR=${HOME}/.cargo-target
 fi
 
 if command -v rg >/dev/null 2>&1; then
@@ -231,6 +254,11 @@ fi
 # Emscripten
 if [ -d "$HOME/Documents/emscripten" ] ; then
     PATH="$HOME/Documents/emscripten/emsdk_portable:$HOME/Documents/emscripten/emsdk_portable/clang/fastcomp/build_incoming_64/bin:$HOME/Documents/emscripten/emsdk_portable/node/4.1.1_64bit/bin:$HOME/Documents/emscripten/emsdk_portable/emscripten/incoming:${PATH}"
+fi
+
+# Node
+if [ -d "$HOME/.npm-global" ] ; then
+    export PATH=~/.npm-global/bin:$PATH
 fi
 
 # Python
@@ -275,10 +303,6 @@ if command -v keychain >/dev/null 2>&1; then
        . $HOME/.keychain/$HOSTNAME-sh-gpg
 fi
 
-if [ -e "$HOME/.bashrc_local" ]; then
-    . "$HOME/.bashrc_local"
-fi
-
 __cmd_source() {
     cmd_name=$1
     if command -v $cmd_name >/dev/null 2>&1; then
@@ -302,10 +326,8 @@ __cmd_source minikube completion bash
 __cmd_source rustup completions bash
 __cmd_source velero completion bash
 
-source <(rustup completions bash cargo)
-
-if [ -f ~/.git-completion.bash ]; then
-    . ~/.git-completion.bash
+if command -v rustup >/dev/null 2>&1; then
+    source <(rustup completions bash cargo)
 fi
 
 # Alias definitions.
@@ -315,4 +337,12 @@ fi
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+
+if [ -e "$HOME/.aws-profile-for-bashrc.sh" ]; then
+    . "$HOME/.aws-profile-for-bashrc.sh"
+fi
+
+if [ -e "$HOME/.bashrc_local" ]; then
+    . "$HOME/.bashrc_local"
 fi
