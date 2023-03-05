@@ -13,6 +13,7 @@
     ui = true
 [diff]
     renames = copies
+    wsErrorHighlight = all
 [merge]
     stat = true
 [alias]
