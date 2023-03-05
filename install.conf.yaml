@@ -22,6 +22,7 @@
     ~/.ripgreprc: ripgreprc
     ~/.tmux.conf: tmux.conf
     ~/.gdbinit: gdbinit
+    ~/.terraformrc: terraformrc
     # Editor
     ~/.vimrc: vimrc
     ~/.ideavimrc: ideavimrc
