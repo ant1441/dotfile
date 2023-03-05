@@ -30,3 +30,44 @@ export CARGO_BINARIES=(
     # Websocket cli util
     websocat
 )
+
+export APT_PACKAGES=(
+    # Libraries
+    python3-dev
+    python3-pip
+    libssl-dev
+
+    # Tools
+    1password
+    curl
+    git
+    htop
+    iperf3
+    jq
+    neovim
+    gron
+    shellcheck
+    whois
+    # inetutils-traceroute
+    tmux
+
+    # TODO: see custom/node
+    #nodejs
+
+    # Manual
+    # Google Chrome - https://linuxhint.com/install_google_chrome_ubuntu_ppa/
+)
+
+# TODO: Sort out node
+export NODE_PACKAGES=(
+    # Neovim LSP
+    bash-language-server
+    yaml-language-server
+    vim-language-server
+)
+
+## Other
+# Vault - https://www.vaultproject.io/downloads
+# AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+# aws-creds - https://gitlab.newsweaver.lan/cloud/aws-credentials/-/releases
+# aws-whoami - https://github.com/benkehoe/aws-whoami

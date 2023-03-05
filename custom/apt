@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+. $(dirname $BASH_SOURCE)/lib.sh
+. $(dirname $BASH_SOURCE)/../install.conf.sh
+
+ret=0
+
+is_installed() {
+    package=$1
+    dpkg -l "${package}" >/dev/null 2>&1
+}
+
+if ! is_installed software-properties-common; then
+    sudo apt install software-properties-common
+fi
+
+if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-jammy.list" ]
+then
+    sudo add-apt-repository ppa:neovim-ppa/stable
+fi
+
+for package in ${APT_PACKAGES[@]}; do
+    if ! is_installed "${package}"; then
+        log "Installing APT package '${package}'"
+        sudo apt install -y "${package}"
+        ret=$((ret + $?))
+    else
+        log_no_change "${package} already installed"
+    fi
+done
+
+# Revoke sudo credentials
+sudo -k
+
+exit $ret

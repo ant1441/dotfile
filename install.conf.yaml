@@ -1,5 +1,9 @@
 - clean: ['~']
 
+- create:
+    - ~/.cache/terraform/plugin-cache
+    - ~/.local/bin
+
 - link:
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
@@ -38,6 +42,11 @@
     #    create: true
 
 - shell:
+  - command: ./custom/apt
+    description: Setting up Apt
+    quiet: true
+    stdout: true
+    stderr: true
   - command: ./custom/rust
     description: Setting up Rust
     quiet: true
