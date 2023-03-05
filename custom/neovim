@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+. $(dirname $BASH_SOURCE)/lib.sh
+. $(dirname $BASH_SOURCE)/../install.conf.sh
+
+packer_path="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+
+if [ -d "$packer_path" ]
+then
+    log_no_change "Packer already installed"
+else
+    log "Installing Packer"
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_path"
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+fi
+
+if [ -f "$HOME/.fonts/Inconsolata Regular Nerd Font Complete.ttf" ]
+then
+    log_no_change "Inconsolata Nerd Font already present"
+else
+    log "Installing Inconsolata Nerd Font"
+    log "TODO"
+    # from https://www.nerdfonts.com/font-downloads
+    # https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Inconsolata.zip
+    # Unzip & copy to ~/.fonts/
+    # Run fc-cache -fv
+fi
+
+# TODO: Install nvim as appimage (The PPA is on 0.7.2, which is pretty old)
+# CUSTOM_NVIM_PATH=$HOME/.local/bin/nvim.appimage
+# curl -L -o $CUSTOM_NVIM_PATH https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+# chmod u+x $CUSTOM_NVIM_PATH
+# sudo update-alternatives --install /usr/bin/ex ex "${CUSTOM_NVIM_PATH}" 110
+# sudo update-alternatives --install /usr/bin/vi vi "${CUSTOM_NVIM_PATH}" 110
+# sudo update-alternatives --install /usr/bin/view view "${CUSTOM_NVIM_PATH}" 110
+# sudo update-alternatives --install /usr/bin/vim vim "${CUSTOM_NVIM_PATH}" 110
+# sudo update-alternatives --install /usr/bin/vimdiff vimdiff "${CUSTOM_NVIM_PATH}" 110
+
+# AppImage needs FUSE - sudo apt install libfuse2

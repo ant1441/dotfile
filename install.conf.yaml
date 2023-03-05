@@ -25,8 +25,12 @@
     # Editor
     ~/.vimrc: vimrc
     ~/.ideavimrc: ideavimrc
-    ~/.config/nvim/init.vim: neovim/init.vim
-    ~/.config/nvim/lua: neovim/lua
+    ~/.config/nvim/init.vim:
+         path: neovim/init.vim
+         create: true
+    ~/.config/nvim/lua:
+         path: neovim/lua
+         create: true
     #~/bin:
     #    path: bin/
     #    create: true
@@ -37,6 +41,11 @@
 - shell:
   - command: ./custom/rust
     description: Setting up Rust
+    quiet: true
+    stdout: true
+    stderr: true
+  - command: ./custom/neovim
+    description: Setting up NeoVim
     quiet: true
     stdout: true
     stderr: true
