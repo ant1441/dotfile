@@ -1,34 +1,31 @@
 #!/bin/bash
 
 # General Aliases
-alias h='history'
-alias allh='history | more'
 alias hgrep='history | grep'
-alias c='clear'
 
-alias vi='vim'
+alias https='http --default-scheme=https'
 
 # Go alias for rg
 alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
 alias rgjava="rg -t java -g '!*test*'"
 alias rgnode="rg -t js -t ts -g '!*node_modules*'"
 
-# Navigation
-# take care aliasing cd, easy potential for infinite loops
-# alias cd='venv_cd'
-alias cd..='cd ..'
-alias cdr='cd $(realpath .)'
-#alias cdwd='cd $(bin/pwd)'
-alias cwd='echo $PWD'
-
 # File system
 alias ln='ln -iv'
 alias du='du -h'
 
-# some ls aliases, 'l' should my default list command
-alias ll='ls -alFh'
-alias la='ls -A'
-alias l='ls -CFB --hide="*.pyc" --hide="*~"'
+# some ls aliases, 'll' should my default list command
+if command -v exa >/dev/null 2>&1; then
+    alias ls='exa'
+    alias ll='ls -alFgh --git'
+    alias la='ls -A'
+    alias l='ls -FB'
+fi
+
+# Cat aliases
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat'
+fi
 
 alias bc='bc -il'
 # Install colordiff package
@@ -94,106 +91,12 @@ if [ -f ~/.git-completion.bash ]; then
     __git_complete gp _git_pull
 fi
 
-if [ -f ~/.slack-secrets.bash ]; then
-    slack_ping ()
-    {
-        . ~/.slack-secrets.bash
-        channel=${2:-"@adam"}
-        message=${1:-"ping!"}
-        # curl --data $message $"$URL?token=$token&channel=$channel"
-        echo $message | http --check-status POST $SLACK_URL token==$SLACK_TOKEN channel==$channel >/dev/null
-    }
-fi
-
-palert ()
-{
-    type="$([ $? = 0 ] && echo terminal || echo error)"
-    last_command=$(history | tail -n1 | sed -e 's/^\s*[0-9]\+\s*//;s/[;&|]\s*palert$//')
-    msg=${1:-"${last_command}"} # Allow overriding the message (if it's sensitive, etc.)
-    notify-send --urgency=critical -i ${type} "${last_command}"
-    slack_ping "${type}: ${msg}"
-}
-
-echo_passed () {
-    echo -ne "\e[32m"
-cat << 'EOF'
-                         .       .
-                        / `.   .' \
-                .---.  <    > <    >  .---.
-                |    \  \ - ~ ~ - /  /    |
-                 ~-..-~             ~-..-~
-             \~~~\.'                    `./~~~/
-              \__/                        \__/
-               /                  .-    .  \
-        _._ _.-    .-~ ~-.       /       }   \/~~~/
-    _.-'q  }~     /       }     {        ;    \__/
-   {'__,  /      (       /      {       /      `. ,~~|   .     .
-    `''''='~~-.__(      /_      |      /- _      `..-'   \\   //
-                / \   =/  ~~--~~{    ./|    ~-.     `-..__\\_//_.-'
-               {   \  +\         \  =\ (        ~ - . _ _ _..---~
-               |  | {   }         \   \_\
-              '---.o___,'       .o___,'
-EOF
-    echo -ne "\e[0m"
-}
-
 # Vim aliases
 # pvim is for running vim in a bash pipeline
 alias pvim='vim +":setlocal buftype=nofile" -'
 alias pvim_yaml='vim +":setlocal buftype=nofile filetype=yaml" -'
 alias pvim_json='vim +":setlocal buftype=nofile filetype=json" -'
 alias pvim_rust='vim +":setlocal buftype=nofile filetype=rust" -'
-
-goci()
-{
-    shell_pid=$$
-    running=false
-
-    pid_file=$(mktemp --suffix _goci.pid)
-    trap "rm -f $pid_file && setterm -cursor on" EXIT SIGINT
-
-    excludes="${excludes}$(find . \( -path ./vendor -o -path ./.git \) -prune -o -type f -executable -print0 | tr "|" "\|" | tr "\0" "|")"
-    excludes="${excludes}\..*\.sw[px]$|.git|.*~$|vendor/.*"
-
-    setterm -cursor off
-    clear
-    inotifywait --quiet --monitor --recursive --exclude "${excludes}" --event modify,create,delete,move --format %f . | stdbuf -oL uniq | while read line
-    do
-        # If there is no file, or it's empty, or the pid is not running, continue
-        if [[ ! -e $pid_file ]] || [[ $(cat $pid_file) == "" ]] || ! kill -0 $(cat $pid_file) 2>/dev/null
-        then
-            clear
-            echo "'''$line''' changed - building..."
-            running=true
-            (
-                set -e
-                go_packages=$(go list ./... | grep -v /vendor/)
-                echo "Go Packages: $go_packages"
-                go build $GO_CI_BUILD_ARGS
-                echo built, now testing...
-                #go test -failfast -v $go_packages
-                # https://github.com/kyoh86/richgo
-                richgo test -failfast -v $go_packages
-                if command -v golangci-lint >/dev/null 2>&1; then
-                    echo "linting...."
-                    golangci-lint run ${GO_CI_LINT_ARGS:---fast} # --enable-all
-                elif command -v golint >/dev/null 2>&1; then
-                    echo linting...
-                    golint -set_exit_status $go_packages
-                fi
-                if [ -n "$(type -t echo_passed)" ] && [ "$(type -t echo_passed)" = function ]; then
-                    clear
-                    echo_passed
-                else
-                    echo "Success!"
-                fi
-            ) &
-            echo $! > ${pid_file}
-            sleep 1
-            running=false
-         fi
-    done
-}
 
 if [ -f ~/.secret_bash_aliases ]; then
     . ~/.secret_bash_aliases
