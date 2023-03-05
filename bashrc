@@ -240,7 +240,7 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 fi
 
 # Rust
-if [ -d "$HOME/.cargo/env" ] ; then
+if [ -f "$HOME/.cargo/env" ] ; then
     . "$HOME/.cargo/env"
 
     # Use a centralised cargo Target dir to reduce disk usage
