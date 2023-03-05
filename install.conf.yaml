@@ -15,8 +15,6 @@
     ~/.git-prompt.sh: git-prompt.sh
     # Python
     ~/.config/flake8: flake8
-    # Go
-    ~/.golangci.yml: golangci.yml
     # Tools
     ~/.jq: jq
     ~/.ripgreprc: ripgreprc
