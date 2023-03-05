@@ -1,4 +1,7 @@
-CARGO_BINARIES=(
+#!/bin/bash
+
+export CARGO_BINARIES=(
+    ## Rust editing
     cargo-edit
     # Expand macros
     cargo-expand
@@ -6,9 +9,15 @@ CARGO_BINARIES=(
     cargo-update
     # Run commands when code changes
     cargo-watch
+    # flamegraph
+
+    ## Utils
+    # A cat(1) clone with wings.
+    bat
     # `ls` alternative
     exa
-    # flamegraph
+    # `find` alternative
+    fd-find
     # `hexdump` alternative
     hexyl
     # Profiler
@@ -18,4 +27,6 @@ CARGO_BINARIES=(
     # silicon
     # Count your code, quickly.
     tokei
+    # Websocket cli util
+    websocat
 )
