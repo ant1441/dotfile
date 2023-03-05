@@ -4,7 +4,7 @@ local navic = require("nvim-navic")
 
 -- The nvim-cmp almost supports LSP's capabilities so you should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
 -- Configure diagnostic display
 vim.diagnostic.config({
@@ -27,14 +27,15 @@ local lsp_attach = function(client, buf)
     -- Could use which-key.nvim?
 
     -- Pres 'K' twice to jump into the Hover window
-    vim.api.nvim_buf_set_keymap(buf, "n", "K",          "<Cmd>lua vim.lsp.buf.hover()<CR>",            { desc = "Hover Info" })
+    vim.api.nvim_buf_set_keymap(buf, "n", "K",          "<Cmd>lua vim.notify('test', 'error')<CR>",            { desc = "Hover Info" })
+    --vim.api.nvim_buf_set_keymap(buf, "n", "K",          "<Cmd>lua vim.lsp.buf.hover()<CR>",            { desc = "Hover Info" })
     vim.api.nvim_buf_set_keymap(buf, "n", "<a-cr>",     "<Cmd>lua vim.lsp.buf.code_action()<CR>",      { desc = "Code Action" })
     vim.api.nvim_buf_set_keymap(buf, "n", "<leader>cr", "<Cmd>lua vim.lsp.buf.rename()<CR>",           { desc = "Rename Symbol" })
     -- vim.api.nvim_buf_set_keymap(buf, "n", "<leader>fs", "<Cmd>lua vim.lsp.buf.document_symbol()<CR>",  { desc = "Document Symbol" })
     -- vim.api.nvim_buf_set_keymap(buf, "n", "<leader>fS", "<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>", { desc = "Workspace Symbol" })
     -- Format the file (unsure the difference between formatting_sync & formatting (& just format, does that work?)
     vim.api.nvim_buf_set_keymap(buf, "n", "<leader>gq", "<Cmd>lua vim.lsp.buf.formatting_sync()<CR>",  { desc = "Format File" })
-    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>F",  "<Cmd>lua vim.lsp.buf.formatting()<CR>",       { desc = "Format File" })
+    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>F",  "<Cmd>lua vim.lsp.buf.format({ async = true })<CR>",       { desc = "Format File" })
 
     vim.api.nvim_buf_set_keymap(buf, "n", "gd", "<Cmd>Telescope lsp_definitions<CR>",  { desc = "Go to Definition" })
     vim.api.nvim_buf_set_keymap(buf, "n", "gr", "<Cmd>Telescope lsp_references<CR>",  { desc = "Find References" })
@@ -48,9 +49,10 @@ local lsp_attach = function(client, buf)
 
     -- Diagnostic actions
     vim.api.nvim_buf_set_keymap(buf, "n", "<leader>qf", "<Cmd>lua vim.diagnostic.setqflist()<CR>",     { desc = "Quickfix Diagnostics" })
-    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>dn", "<Cmd>lua vim.diagnostic.goto_prev()<CR>",     { desc = "Previous Diagnostic" })
-    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>dp", "<Cmd>lua vim.diagnostic.goto_next()<CR>",     { desc = "Next Diagnostic" })
+    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>dn", "<Cmd>lua vim.diagnostic.goto_next()<CR>",     { desc = "Next Diagnostic" })
+    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>dp", "<Cmd>lua vim.diagnostic.goto_prev()<CR>",     { desc = "Previous Diagnostic" })
     vim.api.nvim_buf_set_keymap(buf, "n", "<leader>dk", "<Cmd>lua vim.diagnostic.open_float()<CR>",    { desc = "Explain Symbol" })
+    vim.api.nvim_buf_set_keymap(buf, "n", "<leader>e", "<Cmd>lua vim.diagnostic.open_float()<CR>",     { desc = "Explain Symbol" })
 end
 
 local sign = function(opts)
@@ -98,6 +100,18 @@ lspconfig.bashls.setup {
     on_attach = lsp_attach,
 }
 
+lspconfig.ccls.setup {
+  init_options = {
+    compilationDatabaseDirectory = "build";
+    index = {
+      threads = 0;
+    };
+    clang = {
+      excludeArgs = { "-frounding-math"} ;
+    };
+  }
+}
+
 -- CSS [vscode-langservers-extracted]
 -- Note: Extra snippet config required
 -- lspconfig.cssls.setup {}
@@ -117,7 +131,19 @@ lspconfig.bashls.setup {
 
 -- Java
 -- JSON
+
+-- Python
+lspconfig.jedi_language_server.setup {
+    capabilities = capabilities,
+    on_attach = lsp_attach,
+}
+
 -- Terraform
+-- Typescript [typescript-language-server]
+lspconfig.tsserver.setup {
+    capabilities = capabilities,
+    on_attach = lsp_attach,
+}
 
 -- YAML [yaml-language-server]
 lspconfig.yamlls.setup {

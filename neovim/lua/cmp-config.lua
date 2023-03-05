@@ -59,28 +59,47 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'ultisnips' },
+        { name = 'crates' },
     }, {
         { name = 'nvim_lsp_signature_help' },
     }, {
-        { name = 'buffer' },
-    }, {
-        { name = 'dictionary' },
+        {
+            name = 'buffer',
+            option = {
+                -- Lookup from all open buffers
+                get_bufnrs = function()
+                    return vim.api.nvim_list_bufs()
+                end
+            }
+        },
+    -- }, {
+    --     A bit noisy?
+    --     { name = 'dictionary' },
     })
 })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = {
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp_document_symbol' },
+    },
+    {
         { name = 'buffer' }
-    }
+    })
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = 'path' }
+        {
+            name = 'path',
+            option = {
+                -- This feels annoying?
+                trailing_slash = false,
+            }
+        }
     }, {
         { name = 'cmdline' }
     })
@@ -93,7 +112,15 @@ cmp.setup.filetype('gitcommit', {
     --    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
     --},
     {
-        { name = 'buffer' },
+        {
+            name = 'buffer',
+            option = {
+                -- Lookup from all open buffers
+                get_bufnrs = function()
+                    return vim.api.nvim_list_bufs()
+                end
+            }
+        },
     })
 })
 

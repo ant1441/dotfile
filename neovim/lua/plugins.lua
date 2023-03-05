@@ -6,14 +6,22 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
+if vim.fn.has('nvim-0.8') == 0 then
+    vim.notify("Requires neovim 0.8+", vim.log.levels.ERROR)
+end
+
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+
+    -- Testing terraform
+    use 'hashivim/vim-terraform'
 
     -- Colorschemes
     -- use 'Mofiqul/dracula.nvim'
     use 'EdenEast/nightfox.nvim'
 
+    -- Filetab plugin
     use {
         'romgrk/barbar.nvim',
         requires = {'kyazdani42/nvim-web-devicons'},
@@ -22,9 +30,22 @@ return require('packer').startup(function(use)
                 animation = false,
                 auto_hide = true,
                 icon_custom_colors = true,
-                -- This icon should be nf-mdi-pin, but it doesn't work?
-                -- icon_pinned = '車',
+                icon_pinned = '車',
             }
+        end,
+    }
+
+    -- Better notifications, see :Telescope notify and :Notifications
+    use {
+        'rcarriga/nvim-notify',
+        config = function()
+            vim.notify = require("notify")
+            require("notify").setup { stages = 'fade_in_slide_out', background_colour = 'FloatShadow', timeout = 3000, }
+
+            -- Send a notification to test
+            vim.notify("nvim-nofity installed", "debug", {
+                title = "Neovim config",
+            })
         end,
     }
 
@@ -35,6 +56,7 @@ return require('packer').startup(function(use)
             require('lsp-config')
         end,
     }
+    -- Copletions
     use {
         'hrsh7th/nvim-cmp',
         requires = {
@@ -46,6 +68,7 @@ return require('packer').startup(function(use)
             {'hrsh7th/cmp-nvim-lsp'},
             -- Complete from LSP with function signatures
             {'hrsh7th/cmp-nvim-lsp-signature-help'},
+            {'hrsh7th/cmp-nvim-lsp-document-symbol'},
 
             -- Complete Snippets from UltiSnips
             {'quangnguyen30192/cmp-nvim-ultisnips'},
@@ -59,10 +82,6 @@ return require('packer').startup(function(use)
             require('cmp-config')
          end
     }
-    -- use {
-    --     'petertriho/cmp-git',
-    --     requires = 'nvim-lua/plenary.nvim'
-    -- }
     use {
         'j-hui/fidget.nvim',
         config = function()
@@ -72,24 +91,77 @@ return require('packer').startup(function(use)
 
     use {
         'jose-elias-alvarez/null-ls.nvim',
-        requires = {
-            'nvim-lua/plenary.nvim',
-        },
         config = function()
             local null_ls = require("null-ls")
             null_ls.setup({
                 sources = {
                     -- See builtins
+                    -- These git actions don't seem to work?
                     null_ls.builtins.code_actions.gitsigns,
+                    null_ls.builtins.code_actions.gitrebase,
+
+                    null_ls.builtins.code_actions.gomodifytags,
+
+                    -- Spell suggestions completion source.
+                    -- Might be a bit noisy?
+                    -- null_ls.builtins.completion.spell,
+
+                    -- Tags completion source.
+                    null_ls.builtins.completion.tags,
+
+                    -- Catch insensitive, inconsiderate writing.
+                    -- Could be useful?
+                    -- null_ls.builtins.diagnostics.alex,
+
+                    null_ls.builtins.diagnostics.shellcheck,
+                    null_ls.builtins.diagnostics.todo_comments,
+
+                    -- Sources to try out:
+                    -- null_ls.builtins.diagnostics.ansiblelint,
+                    -- null_ls.builtins.diagnostics.cfn_lint,
+                    -- null_ls.builtins.diagnostics.checkmake,
+                    -- null_ls.builtins.diagnostics.commitlint,
+                    -- null_ls.builtins.diagnostics.gitlint,
+                    -- null_ls.builtins.diagnostics.semgrep,
+                    -- null_ls.builtins.diagnostics.terraform_validate,
+                    -- null_ls.builtins.diagnostics.tfsec,
+                    -- null_ls.builtins.formatting.beautysh
+
                     null_ls.builtins.code_actions.shellcheck,
-                    null_ls.builtins.completion.spell,
                 },
             })
-        end
+        end,
+        requires = {
+            'nvim-lua/plenary.nvim',
+        },
+    }
+
+    -- Treesitter
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
     }
 
     -- Languages
     use 'simrat39/rust-tools.nvim'
+
+    use {
+        'saecki/crates.nvim',
+        tag = 'v0.3.0',
+        requires = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            require('crates').setup(
+            {
+                null_ls = {
+                    enabled = true,
+                    name = "crates.nvim",
+                },
+            })
+        end,
+    }
 
     -- Snippets
     use {
@@ -106,7 +178,12 @@ return require('packer').startup(function(use)
     use 'andymass/vim-matchup'
 
     -- Highlight RGB, css colours
-    use 'NvChad/nvim-colorizer.lua'
+    use {
+        'NvChad/nvim-colorizer.lua',
+        config = function()
+            require('colorizer').setup()
+        end,
+    }
 
     -- Git integration
     use {
@@ -159,6 +236,7 @@ return require('packer').startup(function(use)
     -- Experimental, so not just yet
     -- nvim-treesitter/nvim-treesitter
 
+    -- A pretty diagnostics, references, telescope results, quickfix and location list to help you solve all the trouble your code is causing.
     -- folke/trouble.nvim
 
     -- Viewer & Finder for LSP symbols and tags
@@ -183,4 +261,13 @@ return require('packer').startup(function(use)
     -- A better user experience for viewing and interacting with Vim marks.
     -- I don't use marks often, maybe this would help?
     -- chentoast/marks.nvim
+
+    -- Generate git links - like :GBrowse
+    -- ruifm/gitlinker.nvim
+
+    --  Vim script for text filtering and alignment
+    -- use 'godlygeek/tabular'
+
+    -- A comment toggler for Neovim, written in Lua
+    -- use 'terrortylor/nvim-comment'
 end)
