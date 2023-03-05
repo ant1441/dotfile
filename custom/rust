@@ -5,15 +5,19 @@
 
 ret=0
 
-if !command -v rustup >/dev/null 2>&1; then
+if command -v rustup >/dev/null 2>&1; then
+    log_no_change "rustup already installed"
+else
     log "Installing rustup"
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-else
-    log_no_change "rustup already installed"
+
+    # Update the path for this shell
+    PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 # TODO: Rust components
 # rustup component add rust-src
+# rustup toolchain install nightly
 # TODO: Rust targets
 # rustup target add x86_64-unknown-linux-musl
 
