@@ -227,7 +227,24 @@ return require('packer').startup(function(use)
         end,
     }
 
+    use {
+        'ANGkeith/telescope-terraform-doc.nvim',
+        requires = {
+            {'nvim-telescope/telescope.nvim'},
+        },
+        config = function()
+            require('telescope').load_extension('terraform_doc')
+        end,
+    }
+
     use 'stevearc/dressing.nvim'
+
+    use {
+        "ellisonleao/glow.nvim",
+        config = function()
+            require("glow").setup()
+        end,
+    }
 
     -- Scratch space
     -- Interesting stuff https://github.com/rockerBOO/awesome-neovim
