@@ -91,15 +91,40 @@ require("rust-tools").setup({
 -- Language specific setup
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
+function lspconfig_setup(args)
+    setmetatable(args, {__index={executable=nil, opts={}}})
+    local lsp, executable, opts =
+        args[1] or args.lsp,
+        args[2] or args.executable,
+        args[3] or args.opts
+
+    if executable ~= nil and vim.fn.executable(executable) == 0 then
+        vim.notify(string.format("%s not installed", executable), "warn")
+        return
+    end
+
+    final_opts = {
+        capabilities = capabilities,
+        on_attach = lsp_attach,
+    }
+    for key, value in pairs(opts) do
+        final_opts[key] = value
+    end
+
+    lsp.setup(final_opts)
+end
+
+-- Arduino [arduino-language-server]
+lspconfig_setup {lspconfig.arduino_language_server, 'arduino-language-server'}
+
 -- Ansible [ansible-language-server]
 -- lspconfig.ansiblels.setup {}
 
 -- Bash [bash-language-server]
-lspconfig.bashls.setup {
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-}
+lspconfig_setup {lspconfig.bashls, 'bash-language-server'}
 
+-- C / C++ [ccls]
+-- TODO: We don't have capabilities / on_attach here?
 lspconfig.ccls.setup {
   init_options = {
     compilationDatabaseDirectory = "build";
@@ -132,18 +157,13 @@ lspconfig.ccls.setup {
 -- Java
 -- JSON
 
--- Python
-lspconfig.jedi_language_server.setup {
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-}
+-- Python [jedi-language-server]
+lspconfig_setup {lspconfig.jedi_language_server, 'jedi-language-server'}
 
 -- Terraform
+
 -- Typescript [typescript-language-server]
-lspconfig.tsserver.setup {
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-}
+lspconfig_setup {lspconfig.tsserver, 'typescript-language-server'}
 
 -- YAML [yaml-language-server]
 lspconfig.yamlls.setup {
@@ -160,7 +180,4 @@ lspconfig.yamlls.setup {
 }
 
 -- Vim [vim-language-server]
-lspconfig.vimls.setup {
-    capabilities = capabilities,
-    on_attach = lsp_attach,
-}
+lspconfig_setup {lspconfig.vimls, 'vim-language-server'}
