@@ -99,7 +99,10 @@ function lspconfig_setup(args)
         args[3] or args.opts
 
     if executable ~= nil and vim.fn.executable(executable) == 0 then
-        vim.notify(string.format("%s not installed", executable), "warn")
+        vim.defer_fn(function()
+            -- Defer the notify until after 'rcarriga/nvim-notify' is loaded
+            vim.notify(string.format("%s not installed", executable), "warn")
+        end, 1000)
         return
     end
 
