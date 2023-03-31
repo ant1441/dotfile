@@ -115,7 +115,49 @@ function lspconfig_setup(args)
 end
 
 -- Arduino [arduino-language-server]
-lspconfig_setup {lspconfig.arduino_language_server, 'arduino-language-server'}
+local DEFAULT_ARDUINO_FQBN = "arduino:avr:uno"
+local DEFAULT_ARDUINO_CLI_CONFIG = "arduino-cli.yaml"
+
+-- When the arduino server starts in these directories, use the provided FQBN.
+-- Note that the server needs to start exactly in these directories.
+-- This example would require some extra modification to support applying the FQBN on subdirectories!
+local OVERIDES_ARDUINO_FQBN = {
+    ["/home/ahodgen/Documents/microcontrollers/esp32_bme680_influxdb"] = "esp32:esp32:firebeetle32",
+    ["/home/ahodgen/Documents/microcontrollers/esp32"] = "esp32:esp32:firebeetle32",
+}
+
+lspconfig_setup {lspconfig.arduino_language_server, 'arduino-language-server', {
+    on_new_config = function (config, root_dir)
+        local cmd = {"arduino-language-server"}
+        if vim.fn.filereadable(root_dir .. "/" .. DEFAULT_ARDUINO_CLI_CONFIG) == 1 then
+            local arduino_cli_config = root_dir .. "/" .. DEFAULT_ARDUINO_CLI_CONFIG
+
+            table.insert(cmd, "-cli-config")
+            table.insert(cmd, arduino_cli_config)
+        end
+
+        -- Logging
+        -- local logdir = vim.fn.stdpath('log') .. "/" .. 'lsp_arduino-language-server'
+        -- if not vim.fn.isdirectory(logdir) then
+        --     vim.fn.mkdir(logdir, "")
+        -- end
+
+        -- table.insert(cmd, "-log")
+        -- table.insert(cmd, "-logpath")
+        -- table.insert(cmd, logdir)
+
+        local fqbn = OVERIDES_ARDUINO_FQBN[root_dir]
+        if not fqbn then
+            vim.notify(("Could not find which FQBN to use in %q. Defaulting to %q."):format(root_dir, DEFAULT_FQBN))
+            fqbn = DEFAULT_FQBN
+        end
+        table.insert(cmd, "-fqbn")
+        table.insert(cmd, fqbn)
+
+        vim.notify(("Using arduino-language-server config %s"):format(vim.inspect(cmd)), vim.log.levels.INFO)
+        config.cmd = cmd
+    end
+}}
 
 -- Ansible [ansible-language-server]
 -- lspconfig.ansiblels.setup {}
