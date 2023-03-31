@@ -27,11 +27,17 @@ return require('packer').startup(function(use)
         'romgrk/barbar.nvim',
         requires = {'kyazdani42/nvim-web-devicons'},
         config = function()
-            require('bufferline').setup {
+            require('barbar').setup {
                 animation = false,
                 auto_hide = true,
-                icon_custom_colors = true,
-                icon_pinned = '車',
+                icons = {
+                    filetype = {
+                        custom_colors = true,
+                    },
+                    pinned = {
+                        button = '車',
+                    },
+                },
             }
         end,
     }
