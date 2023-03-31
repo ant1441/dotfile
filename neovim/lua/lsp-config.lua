@@ -203,6 +203,7 @@ lspconfig.ccls.setup {
 lspconfig_setup {lspconfig.jedi_language_server, 'jedi-language-server'}
 
 -- Terraform
+lspconfig_setup {lspconfig.terraformls, 'terraform-ls'}
 
 -- Typescript [typescript-language-server]
 lspconfig_setup {lspconfig.tsserver, 'typescript-language-server'}
