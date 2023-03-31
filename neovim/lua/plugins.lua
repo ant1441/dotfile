@@ -10,6 +10,7 @@ if vim.fn.has('nvim-0.8') == 0 then
     vim.notify("Requires neovim 0.8+", vim.log.levels.ERROR)
 end
 
+-- Plugins are in ~/.local/share/nvim/site/pack/packer/start/
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -249,28 +250,29 @@ return require('packer').startup(function(use)
     -- Scratch space
     -- Interesting stuff https://github.com/rockerBOO/awesome-neovim
 
-    -- Nvim Treesitter configurations and abstraction layer
-    -- Experimental, so not just yet
-    -- nvim-treesitter/nvim-treesitter
-
-    -- A pretty diagnostics, references, telescope results, quickfix and location list to help you solve all the trouble your code is causing.
-    -- folke/trouble.nvim
-
+    -- ## LSP
     -- Viewer & Finder for LSP symbols and tags
     -- liuchengxu/vista.vim
-
-    -- A file explorer tree for neovim written in lua
-    -- kyazdani42/nvim-tree.lua
-    -- A tree explorer plugin for vim.
-    -- preservim/nerdtree
+    -- The plugin shows a lightbulb in the sign column whenever a textDocument/codeAction is available at the current cursor position.
+    -- kosayoda/nvim-lightbulb
 
     -- Portable package manager for Neovim that runs everywhere Neovim runs.
     -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
     -- williamboman/mason.nvim
 
-    -- Closes brackets. Perfect companion to vim-endwise.
-    -- Basically, a more conservative version of auto-pairs that only works when you press Enter.
-    -- use '9mm/vim-closer'
+    -- ## Markdown
+    -- Markdown preview using glow.
+    -- ellisonleao/glow.nvim
+    -- Handle code blocks properly
+    -- AckslD/nvim-FeMaco.lua
+
+    -- A pretty diagnostics, references, telescope results, quickfix and location list to help you solve all the trouble your code is causing.
+    -- folke/trouble.nvim
+
+    -- A file explorer tree for neovim written in lua
+    -- kyazdani42/nvim-tree.lua
+    -- A tree explorer plugin for vim.
+    -- preservim/nerdtree
 
     -- Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
     -- use 'dense-analysis/ale'
@@ -282,9 +284,21 @@ return require('packer').startup(function(use)
     -- Generate git links - like :GBrowse
     -- ruifm/gitlinker.nvim
 
+    -- ## Editing and motion
+
+    -- Closes brackets. Perfect companion to vim-endwise.
+    -- Basically, a more conservative version of auto-pairs that only works when you press Enter.
+    -- use '9mm/vim-closer'
+
+    -- Comments: https://github.com/rockerBOO/awesome-neovim/blob/main/README.md#comment
+    -- A comment toggler for Neovim, written in Lua
+    -- use 'terrortylor/nvim-comment'
+
+    -- Vim plugin that defines a new text object representing lines of code at the same indent level. Useful for python/vim scripts, etc.
+    -- michaeljsmith/vim-indent-object
+
     --  Vim script for text filtering and alignment
     -- use 'godlygeek/tabular'
 
-    -- A comment toggler for Neovim, written in Lua
-    -- use 'terrortylor/nvim-comment'
+    -- folke/zen-mode.nvim
 end)
