@@ -1,21 +1,11 @@
-[credential]
-    helper = cache
-[push]
-    default = simple
+# TODO: Move this file to $XDG_CONFIG_HOME/git/config
+#       Support for this was only added "recently", so check that first
+
 [core]
-    excludesfile = ~/.git_global_ignore
-    symlinks = true
-    # Treat spaces before tabs and all trailing whitespace as an error
-    whitespace = spaces-before-tab,trailing-space
-    autocrlf = input
     editor = vim
-[color]
-    ui = true
-[diff]
-    renames = copies
-    wsErrorHighlight = all
-[merge]
-    stat = true
+    # TODO, move to Default. Defaults to $XDG_CONFIG_HOME/git/ignore.
+    excludesfile = ~/.git_global_ignore
+
 [alias]
     st = status
     d = diff
@@ -26,7 +16,25 @@
     cdiff = diff --cached
     wdiff = diff --word-diff
     padd = add -p
-[include]
-    path = ~/.gitconfig_local
+
+[diff]
+    renames = copies
+    wsErrorHighlight = all
+
 [init]
     defaultBranch = main
+
+[push]
+    default = simple
+    # For Git > 2.37.1, try this out:
+    # push.autoSetupRemote
+
+[rebase]
+    autosquash = true
+
+[status]
+    showStash = true
+
+[include]
+    # TODO, move to $XDG_CONFIG_HOME/git/...?
+    path = ~/.gitconfig_local
