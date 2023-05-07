@@ -18,6 +18,8 @@ export CARGO_BINARIES=(
     exa
     # `find` alternative
     fd-find
+    # A syntax-highlighting pager for git, diff, and grep output
+    git-delta
     # `hexdump` alternative
     hexyl
     # Profiler

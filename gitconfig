@@ -5,6 +5,10 @@
     editor = vim
     # TODO, move to Default. Defaults to $XDG_CONFIG_HOME/git/ignore.
     excludesfile = ~/.git_global_ignore
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
 
 [alias]
     st = status
@@ -38,3 +42,21 @@
 [include]
     # TODO, move to $XDG_CONFIG_HOME/git/...?
     path = ~/.gitconfig_local
+
+[delta]
+    features = decorations
+
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+    hyperlinks = true
+    line-numbers = true
