@@ -8,10 +8,11 @@
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
     # bash
-    ~/.bash_aliases: bash_aliases
-    ~/.bash_profile: bash_profile
+    # We track the profile files as random tools like to add things to them
+    # We aim to keep them unmodified, all modifications should go into bashrc
+-   ~/.profile: profile
     ~/.bashrc: bashrc
-    ~/.profile: profile
+    ~/.bash_aliases: bash_aliases
     # Git
     ~/.git-completion.bash: git-completion.bash
     ~/.gitconfig: gitconfig
