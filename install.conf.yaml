@@ -10,7 +10,7 @@
     # bash
     # We track the profile files as random tools like to add things to them
     # We aim to keep them unmodified, all modifications should go into bashrc
--   ~/.profile: profile
+    ~/.profile: profile
     ~/.bashrc: bashrc
     ~/.bash_aliases: bash_aliases
     # Git
