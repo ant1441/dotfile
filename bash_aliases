@@ -10,6 +10,8 @@ alias rggo="rg -t go -g '!vendor' -g '!*_test.go'"
 alias rgjava="rg -t java -g '!*test*'"
 alias rgnode="rg -t js -t ts -g '!*node_modules*'"
 
+alias objdump='objdump -M intel'
+
 # File system
 alias ln='ln -iv'
 alias du='du -h'

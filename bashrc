@@ -263,7 +263,7 @@ fi
 
 # Python
 if [ -d "$HOME/.python3-env" ] ; then
-    VIRTUAL_ENV_DISABLE_PROMPT=true . $HOME/.python3-env/bin/activate
+    VIRTUAL_ENV_DISABLE_PROMPT=true . "$HOME/.python3-env/bin/activate"
 fi
 
 # gradle
@@ -281,6 +281,11 @@ fi
 if command -v vault >/dev/null 2>&1; then
     # vault -autocomplete-install
     complete -C /home/ahodgen/.local/bin/vault vault
+fi
+
+# Jetbrains toolbox
+if [ -d "$HOME/.local/share/JetBrains/Toolbox/scripts" ] ; then
+    PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:${PATH}"
 fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -314,6 +319,7 @@ __cmd_source() {
     fi
 }
 
+__cmd_source arduino-cli completion bash
 __cmd_source ark completion bash
 __cmd_source diesel completions bash
 __cmd_source doctl completion bash
