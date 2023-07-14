@@ -3,6 +3,7 @@
 - create:
     - ~/.cache/terraform/plugin-cache
     - ~/.local/bin
+    - ~/.config/tmux
 
 - link:
     # aws
@@ -23,7 +24,7 @@
     # Tools
     ~/.jq: jq
     ~/.ripgreprc: ripgreprc
-    ~/.tmux.conf: tmux.conf
+    ~/.config/tmux/tmux.conf: tmux.conf
     ~/.gdbinit: gdbinit
     ~/.terraformrc: terraformrc
     # Editor
