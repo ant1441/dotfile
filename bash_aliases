@@ -17,9 +17,9 @@ alias ln='ln -iv'
 alias du='du -h'
 
 # some ls aliases, 'll' should my default list command
-if command -v exa >/dev/null 2>&1; then
-    alias ls='exa'
-    alias ll='ls -alFgh --git'
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza'
+    alias ll='ls -alFgh --git --git-repos --icons --hyperlink'
     alias la='ls -A'
     alias l='ls -FB'
 fi

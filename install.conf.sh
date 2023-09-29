@@ -15,7 +15,7 @@ export CARGO_BINARIES=(
     # A cat(1) clone with wings.
     bat
     # `ls` alternative
-    exa
+    eza
     # `find` alternative
     fd-find
     # A syntax-highlighting pager for git, diff, and grep output
