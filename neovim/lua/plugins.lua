@@ -91,12 +91,14 @@ return require('packer').startup(function(use)
     }
     use {
         'j-hui/fidget.nvim',
+        tag = 'legacy',
         config = function()
             require('fidget').setup {}
         end
     }
 
     use {
+        -- TODO: null-ls is deprecated, find another option
         'jose-elias-alvarez/null-ls.nvim',
         config = function()
             local null_ls = require("null-ls")
@@ -121,7 +123,8 @@ return require('packer').startup(function(use)
                     -- null_ls.builtins.diagnostics.alex,
 
                     null_ls.builtins.diagnostics.shellcheck,
-                    null_ls.builtins.diagnostics.todo_comments,
+                    -- TODO: failing
+                    -- null_ls.builtins.diagnostics.todo_comments,
 
                     -- Sources to try out:
                     -- null_ls.builtins.diagnostics.ansiblelint,
