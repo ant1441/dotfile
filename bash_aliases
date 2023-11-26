@@ -55,12 +55,17 @@ alias irssi='TERM=screen-256color irssi'
 
 git_pull_all ()
 {
-  find -name .git -execdir git pull \;
+  find -name .git -execdir bash -c 'echo -n "$PWD: "; git pull' \;
 }
 
 git_checkout_all ()
 {
   find -name .git -execdir git checkout "$1" \;
+}
+
+git_branch_all ()
+{
+  find -name .git -execdir bash -c 'echo -n "$PWD: "; git branch --show-current' \;
 }
 
 git_remote_state ()
