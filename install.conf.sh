@@ -31,6 +31,8 @@ export CARGO_BINARIES=(
     tokei
     # Websocket cli util
     websocat
+    # Language server for NASM/GAS/GO Assembly
+    asm-lsp
 )
 
 export APT_PACKAGES=(
@@ -52,6 +54,13 @@ export APT_PACKAGES=(
     whois
     # inetutils-traceroute
     tmux
+    pv
+
+    # Editor / LSP
+    clangd
+    # Needs Hashicorp PPA
+    # terraform
+    # terraform-ls
 
     # TODO: see custom/node
     #nodejs
@@ -66,6 +75,7 @@ export NODE_PACKAGES=(
     bash-language-server
     yaml-language-server
     vim-language-server
+    vscode-langservers-extracted
 )
 
 ## Other
