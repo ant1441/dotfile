@@ -69,6 +69,20 @@ if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
 fi
 
+# XDG_BASE_DIR overrides
+export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+export LESSHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/less/history"
+
+if command -v ccache >/dev/null 2>&1; then
+    export CCACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ccache"
+fi
+if command -v gdb >/dev/null 2>&1; then
+    export GDBHISTFILE="${XDG_CONFIG_HOME:-$HOME/.config}/gdb/gdb_history"
+fi
+if command -v vagrant >/dev/null 2>&1; then
+    export VAGRANT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/vagrant"
+fi
+
 # Check if we have SCM branch functions defined
 if ! ( [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ] ); then
 # if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
@@ -232,7 +246,7 @@ if [ -d ~/.rvm/bin ]; then
 fi
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
     # NVM is quite slow
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -240,11 +254,16 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 fi
 
 # Rust
-if [ -f "$HOME/.cargo/env" ] ; then
-    . "$HOME/.cargo/env"
+export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
+
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+if [ "$CARGO_HOME" ] ; then
+    # . "$CARGO_HOME/env"
+    export PATH="$CARGO_HOME/bin:$PATH"
 
     # Use a centralised cargo Target dir to reduce disk usage
-    export CARGO_TARGET_DIR=${HOME}/.cargo-target
+    export CARGO_TARGET_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/cargo-target"
+    mkdir -p "$CARGO_TARGET_DIR"
 fi
 
 if command -v rg >/dev/null 2>&1; then

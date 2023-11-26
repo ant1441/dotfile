@@ -3,7 +3,12 @@
 - create:
     - ~/.cache/terraform/plugin-cache
     - ~/.local/bin
+    - ~/.config/gdb
+    - ~/.config/git
+    - ~/.config/ideavim
     - ~/.config/tmux
+    - ~/.local/state/bash
+    - ~/.local/state/less
 
 - link:
     # aws
@@ -16,7 +21,7 @@
     ~/.bash_aliases: bash_aliases
     # Git
     ~/.git-completion.bash: git-completion.bash
-    ~/.gitconfig: gitconfig
+    ~/.config/git/config: gitconfig
     ~/.git_global_ignore: git_global_ignore
     ~/.git-prompt.sh: git-prompt.sh
     # Python
@@ -25,11 +30,11 @@
     ~/.jq: jq
     ~/.ripgreprc: ripgreprc
     ~/.config/tmux/tmux.conf: tmux.conf
-    ~/.gdbinit: gdbinit
+    ~/.config/gdb/gdbinit: gdbinit
     ~/.terraformrc: terraformrc
     # Editor
     ~/.vimrc: vimrc
-    ~/.ideavimrc: ideavimrc
+    ~/.config/ideavim/ideavimrc: ideavimrc
     ~/.config/nvim/init.vim:
          path: neovim/init.vim
          create: true
