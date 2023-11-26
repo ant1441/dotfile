@@ -9,6 +9,7 @@
     - ~/.config/tmux
     - ~/.local/state/bash
     - ~/.local/state/less
+    - ~/.ssh/config.d
 
 - link:
     # aws
@@ -43,9 +44,9 @@
     #~/bin:
     #    path: bin/
     #    create: true
-    #~/.ssh/config:
-    #    path: ssh/config
-    #    create: true
+    ~/.ssh/config:
+        path: ssh/config
+        create: true
 
 - shell:
   - command: ./custom/apt

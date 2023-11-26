@@ -1,1 +1,6 @@
-Include config.d/local
+SetEnv TERM=xterm-256color
+
+Host *
+    PasswordAuthentication no
+
+Include config.d/*.conf
