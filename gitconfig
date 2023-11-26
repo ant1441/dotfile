@@ -20,6 +20,7 @@
     cdiff = diff --cached
     wdiff = diff --word-diff
     padd = add -p
+    lg = log --date=format:'%a %b %e, %Y' --pretty=format:'%C(yellow)%h%C(reset) %s %C(cyan)%cd%C(reset) %C(blue)%aN%C(reset) %C(green)%d%C(reset)' --graph
 
 [diff]
     renames = copies
