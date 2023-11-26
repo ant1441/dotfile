@@ -41,8 +41,7 @@
     showStash = true
 
 [include]
-    # TODO, move to $XDG_CONFIG_HOME/git/...?
-    path = ~/.gitconfig_local
+    path = ~/.config/git/config_local
 
 [delta]
     features = decorations
