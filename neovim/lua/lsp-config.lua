@@ -161,6 +161,9 @@ lspconfig_setup {lspconfig.arduino_language_server, 'arduino-language-server', {
     end
 }}
 
+-- ASM [asm-lsp]
+lspconfig_setup {lspconfig.asm_lsp, 'asm-lsp'}
+
 -- Ansible [ansible-language-server]
 -- lspconfig.ansiblels.setup {}
 
@@ -183,7 +186,7 @@ lspconfig.ccls.setup {
 
 -- CSS [vscode-langservers-extracted]
 -- Note: Extra snippet config required
--- lspconfig.cssls.setup {}
+lspconfig.cssls.setup {}
 
 -- Docker [dockerfile-language-server-nodejs]
 -- lspconfig.dockerls.setup{}
@@ -195,13 +198,18 @@ lspconfig.ccls.setup {
 -- lspconfig.gopls.setup{}
 
 -- HTML [vscode-langservers-extracted]
--- Note: Extra snippet config required
--- lspconfig.htmlls.setup{}
+-- Note: Extra snippet config required?
+lspconfig_setup {lspconfig.html, 'vscode-html-language-server'}
 
 -- Java
 -- JSON
 
+-- Latex
+lspconfig_setup {lspconfig.texlab, 'texlab'}
+
 -- Python [jedi-language-server]
+-- TODO: Because we use ~/.neovim.env, lspconfig_setup won't find this
+--       executable, and will _always_ warn about it
 lspconfig_setup {lspconfig.jedi_language_server, 'jedi-language-server'}
 
 -- Terraform
