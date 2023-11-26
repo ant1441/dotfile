@@ -210,13 +210,6 @@ fi
 
 ## Custom
 
-if [ -d ~/bin ]; then
-    export PATH="$HOME/bin:$PATH"
-fi
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
 # tmux
 if [ -f ~/.tmuxinator.bash ]; then
     . ~/.tmuxinator.bash
