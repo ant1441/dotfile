@@ -1,0 +1,6 @@
+#!/bin/sh
+
+tmux_session_name="alacritty-$ALACRITTY_WINDOW_ID"
+
+# TODO: Can we 'exec' this, so the shell running this script doesn't persist?
+tmux attach -t "$tmux_session_name" || tmux new -s "$tmux_session_name"

@@ -12,6 +12,7 @@
     - ~/.ssh/config.d
 
 - link:
+    ~/.config/alacritty: alacritty
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
     # bash
