@@ -274,7 +274,7 @@ fi
 # Terraform
 if command -v terraform >/dev/null 2>&1; then
     # terraform -install-autocomplete
-    complete -C /home/ahodgen/.local/bin/terraform terraform
+    complete -C $(which terraform) terraform
 fi
 
 # Vault
@@ -331,6 +331,7 @@ __cmd_source linkerd completion bash
 __cmd_source minikube completion bash
 __cmd_source rustup completions bash
 __cmd_source velero completion bash
+__cmd_source terraform-docs completion bash
 
 if command -v rustup >/dev/null 2>&1; then
     source <(rustup completions bash cargo)
