@@ -19,9 +19,6 @@ cmake
 snap:
  - ngrok
 
-Vim:
- - dein
- - ~/.vimrc
 Python:
  - jupyter
  - requests
