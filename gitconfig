@@ -60,3 +60,4 @@
     hunk-header-style = file line-number syntax
     hyperlinks = true
     line-numbers = true
+    keep-plus-minus-markers = true
