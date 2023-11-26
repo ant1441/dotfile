@@ -226,11 +226,8 @@ fi
 
 # Golang
 if command -v go >/dev/null 2>&1; then
-    export GOPATH="$HOME/.gopath"
-    mkdir -p $GOPATH
-    if [ -d "$HOME/.gopath/bin" ]; then
-        export PATH="$PATH:$HOME/.gopath/bin" # Add GO to PATH for scripting
-    fi
+    # TODO: Can GOPATH go in an XDG path?
+    export PATH="$PATH:$(go env GOPATH)"
 fi
 
 # RVM
