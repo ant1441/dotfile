@@ -57,7 +57,7 @@ export APT_PACKAGES=(
     pv
 
     # Editor / LSP
-    clangd
+    # clangd # clangd is a very large install (pulls in libllvm)
     # Needs Hashicorp PPA
     # terraform
     # terraform-ls
@@ -69,7 +69,6 @@ export APT_PACKAGES=(
     # Google Chrome - https://linuxhint.com/install_google_chrome_ubuntu_ppa/
 )
 
-# TODO: Sort out node
 export NODE_PACKAGES=(
     # Neovim LSP
     bash-language-server
