@@ -5,14 +5,15 @@
 
 ret=0
 
+export RUSTUP_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/rustup"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export PATH="$CARGO_HOME/bin:$PATH"
+
 if command -v rustup >/dev/null 2>&1; then
     log_no_change "rustup already installed"
 else
     log "Installing rustup"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-    # Update the path for this shell
-    PATH="$HOME/.cargo/bin:$PATH"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 fi
 
 # TODO: Rust components
@@ -34,7 +35,7 @@ is_installed() {
 for bin in ${CARGO_BINARIES[@]}; do
     if ! is_installed "${bin}"; then
         log "Installing Cargo binary '${bin}'"
-        cargo install --quiet ${bin}
+        cargo install --quiet "${bin}"
         ret=$((ret + $?))
     else
         log_no_change "${bin} already installed"
