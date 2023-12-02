@@ -257,7 +257,7 @@ if [ "$CARGO_HOME" ] ; then
 fi
 
 if command -v rg >/dev/null 2>&1; then
-    export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+    export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/rc"
 fi
 
 # Emscripten

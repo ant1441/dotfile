@@ -7,6 +7,7 @@
     - ~/.config/gdb
     - ~/.config/git
     - ~/.config/ideavim
+    - ~/.config/ripgrep
     - ~/.config/tmux
     - ~/.local/state/bash
     - ~/.local/state/less
@@ -32,7 +33,7 @@
     ~/.config/flake8: flake8
     # Tools
     ~/.jq: jq
-    ~/.ripgreprc: ripgreprc
+    ~/.config/ripgrep/rc: ripgreprc
     ~/.config/tmux/tmux.conf: tmux.conf
     ~/.config/gdb/gdbinit: gdbinit
     ~/.terraformrc: terraformrc
