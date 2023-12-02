@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+. $(dirname $BASH_SOURCE)/lib.sh
+. $(dirname $BASH_SOURCE)/../install.conf.sh
+
+ret=0
+
+ALACRITTY_VERSION=0.12.3
+ALACRITTY_TERMINFO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/alacritty.info"
+ALACRITTY_LOGO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.svg"
+ALACRITTY_DESKTOP_ENTRY_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.desktop"
+
+tmpdir=$(mktemp -d)
+trap 'rm -r -- "$tmpdir"' EXIT
+
+if command -v alacritty >/dev/null 2>&1
+then
+    log_no_change "Alacritty already installed"
+else
+    log "Installing alacritty"
+    cargo install --version ${ALACRITTY_VERSION} alacritty
+
+    # Move the binary to a global path
+    # This is required for the Desktop entry to appear
+    mv "${CARGO_HOME}/bin/alacritty" /usr/local/bin/alacritty
+
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+fi
+
+if ! infocmp alacritty >/dev/null 2>&1
+then
+    log "Installing terminfo"
+
+    curl -fsSL -o "${tmpdir}/alacritty.info" "${ALACRITTY_TERMINFO_URL}"
+    sudo tic -xe alacritty,alacritty-direct "${tmpdir}/alacritty.info"
+fi
+
+if ! [ -e "/usr/share/applications/Alacritty.desktop" ]
+then
+    log "Install desktop entry"
+    curl -fsSL -o "${tmpdir}/Alacritty.desktop" "${ALACRITTY_DESKTOP_ENTRY_URL}"
+    curl -fsSL -o "${tmpdir}/Alacritty.svg" "${ALACRITTY_LOGO_URL}"
+
+    sudo cp "${tmpdir}/Alacritty.svg" /usr/share/pixmaps/Alacritty.svg
+    sudo desktop-file-install "${tmpdir}/Alacritty.desktop"
+    sudo update-desktop-database
+fi
+
+# Skipping the man page setup
+
+sudo -k
+
+exit $ret

@@ -3,6 +3,7 @@
 - create:
     - ~/.cache/terraform/plugin-cache
     - ~/.local/bin
+    - ~/.config/alacritty
     - ~/.config/gdb
     - ~/.config/git
     - ~/.config/ideavim
@@ -12,7 +13,8 @@
     - ~/.ssh/config.d
 
 - link:
-    ~/.config/alacritty: alacritty
+    ~/.config/alacritty/alacritty.yml: alacritty/alacritty.yml
+    ~/.config/alacritty/tmux: alacritty/tmux
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
     # bash
@@ -62,6 +64,11 @@
     stderr: true
   - command: ./custom/neovim
     description: Setting up NeoVim
+    quiet: true
+    stdout: true
+    stderr: true
+  - command: ./custom/alacritty
+    description: Setting up Alacritty
     quiet: true
     stdout: true
     stderr: true
