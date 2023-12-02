@@ -1,10 +1,5 @@
-# TODO: Move this file to $XDG_CONFIG_HOME/git/config
-#       Support for this was only added "recently", so check that first
-
 [core]
     editor = vim
-    # TODO, move to Default. Defaults to $XDG_CONFIG_HOME/git/ignore.
-    excludesfile = ~/.git_global_ignore
     pager = delta
 
 [interactive]

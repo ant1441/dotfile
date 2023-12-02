@@ -59,14 +59,12 @@ case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
 
-if [ -f ~/.git-prompt.sh ]; then
-    # From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-    . ~/.git-prompt.sh
+if [ -f "$HOME/.config/git/prompt.sh" ]; then
+    . "$HOME/.config/git/prompt.sh"
 fi
 
-if [ -f ~/.git-completion.bash ]; then
-    # From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-    . ~/.git-completion.bash
+if [ -f "$HOME/.config/git/completion.bash" ]; then
+    . "$HOME/.config/git/completion.bash"
 fi
 
 # XDG_BASE_DIR overrides

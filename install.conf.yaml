@@ -25,10 +25,12 @@
     ~/.bashrc: bashrc
     ~/.bash_aliases: bash_aliases
     # Git
-    ~/.git-completion.bash: git-completion.bash
-    ~/.config/git/config: gitconfig
-    ~/.git_global_ignore: git_global_ignore
-    ~/.git-prompt.sh: git-prompt.sh
+    ~/.config/git/config: git/config
+    ~/.config/git/ignore: git/ignore
+    ## From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+    ~/.config/git/prompt.sh: git/prompt.sh
+    ## From https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+    ~/.config/git/completion.bash: git/completion.bash
     # Python
     ~/.config/flake8: flake8
     # Tools
