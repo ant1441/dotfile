@@ -7,16 +7,23 @@ ret=0
 
 is_installed() {
     package=$1
-    dpkg -l "${package}" >/dev/null 2>&1
+    dpkg -s "${package}" >/dev/null 2>&1
 }
 
 if ! is_installed software-properties-common; then
     sudo apt install software-properties-common
+    update_required=1
 fi
 
-if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-stable-jammy.list" ]
+if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-jammy.list" ]
 then
-    sudo add-apt-repository ppa:neovim-ppa/stable
+    sudo add-apt-repository ppa:neovim-ppa/unstable
+    update_required=1
+fi
+
+if [ "$update_required" ]
+then
+    sudo apt update
 fi
 
 for package in ${APT_PACKAGES[@]}; do
