@@ -37,9 +37,21 @@ export CARGO_BINARIES=(
 
 export APT_PACKAGES=(
     # Libraries
-    python3-dev
-    python3-pip
+    libfontconfig1-dev
+    libfreetype6-dev
     libssl-dev
+    libxcb-xfixes0-dev
+    libxkbcommon-dev
+
+    # Python packages
+    python3-dev
+    python3-neovim
+    python3-pip
+    python3-venv
+
+    pkg-config
+
+    cmake
 
     # Tools
     1password
