@@ -10,14 +10,14 @@ local navic = require("nvim-navic")
 -- built-in condition
 local condition = require('galaxyline.condition')
 
+-- nightfox spec
+local spec = require("nightfox.spec").load(vim.g.colors_name)
+
+local sides_bg = spec.bg2
+local center_bg = spec.bg1
+local no_color = '#ffffff'
+
 local colors = {
-    bg       = "#282c34", -- Left and right
-    line_bg  = "#353644", -- Middle
-    fg       = '#8FBCBB', -- Light green text
-
-    none     = '#ffffff',
-
-    fg_green = '#65a380', -- unused
     yellow   = '#fabd2f',
     cyan     = '#008080',
     darkblue = '#081633',
@@ -108,7 +108,7 @@ gls.left = {
     {
         FirstElement = {
             provider = Space,
-            highlight = {colors.none, colors.line_bg}
+            highlight = {no_color, sides_bg},
         },
     },
     -- Mode indicator
@@ -135,14 +135,18 @@ gls.left = {
                     -- Insert
                     i = colors.blue,
                     -- Visual (by character, blockwise, by line)
-                    v = colors.magenta, [''] = colors.magenta, V = colors.magenta,
+                    v = colors.magenta,
+                    [''] = colors.magenta,
+                    V = colors.magenta,
                     -- Command Line
                     c = colors.red,
                     -- Replace
                     R = colors.purple,
 
                     -- Select (by character, blockwise, by line)
-                    s = colors.orange, [''] = colors.orange, S = colors.orange,
+                    s = colors.orange,
+                    [''] = colors.orange,
+                    S = colors.orange,
                     -- Hit-enter prompt
                     r = colors.cyan,
                     -- Shell or external command is executing
@@ -154,7 +158,7 @@ gls.left = {
                 vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim_mode])
                 return alias[vim_mode] .. '   '
             end,
-            highlight = {colors.none, colors.line_bg, 'bold'},
+            highlight = {no_color, sides_bg, 'bold'},
         },
     },
     -- Filetype icon
@@ -162,14 +166,14 @@ gls.left = {
         FileIcon = {
             provider = 'FileIcon',
             condition = condition.buffer_not_empty,
-            highlight = {fileinfo.get_file_icon_color, colors.line_bg},
+            highlight = {fileinfo.get_file_icon_color, sides_bg},
         },
     },
     -- Filename
     {
         Filename = {
             provider = GetCurrentFileName,
-            highlight = {colors.fg, colors.line_bg, 'bold'}
+            highlight = {spec.fg2, sides_bg, 'bold'}
         }
     },
     -- Filesize
@@ -177,7 +181,7 @@ gls.left = {
         Filesize = {
             provider = 'FileSize',
             condition = condition.hide_in_width,
-            highlight = {colors.fg, colors.line_bg, 'bold'}
+            highlight = {spec.fg3, sides_bg, 'bold'}
         }
     },
     -- Git branch
@@ -186,7 +190,7 @@ gls.left = {
             provider = 'GitBranch',
             condition = condition.check_git_workspace,
             icon = '  ',
-            highlight = {colors.yellow, colors.line_bg, 'bold'},
+            highlight = {spec.diag.hint, sides_bg, 'bold'},
         }
     },
 
@@ -195,7 +199,7 @@ gls.left = {
         Space = {
             provider = Space,
             condition = condition.hide_in_width,
-            highlight = {colors.none, colors.line_bg},
+            highlight = {no_color, sides_bg},
         }
     },
 
@@ -205,7 +209,7 @@ gls.left = {
             provider = 'DiffAdd',
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.green, colors.line_bg},
+            highlight = {spec.git.add, sides_bg},
         }
     },
     -- Git diff - Modified count
@@ -214,7 +218,7 @@ gls.left = {
             provider = 'DiffModified',
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.orange, colors.line_bg},
+            highlight = {spec.git.changed, sides_bg},
         }
     },
     -- Git diff - Remove count
@@ -223,7 +227,7 @@ gls.left = {
             provider = 'DiffRemove',
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.red, colors.line_bg},
+            highlight = {spec.git.removed, sides_bg},
         }
     },
     -- Angled Seperator
@@ -231,8 +235,8 @@ gls.left = {
         LeftEnd = {
             provider = function() return '' end,
             separator = '',
-            separator_highlight = {colors.bg, colors.line_bg},
-            highlight = {colors.line_bg, colors.line_bg}
+            separator_highlight = {center_bg, sides_bg},
+            highlight = {sides_bg, sides_bg}
         }
     },
 
@@ -242,7 +246,7 @@ gls.left = {
             provider = TrailingWhiteSpace,
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.yellow, colors.bg},
+            highlight = {spec.diag.warn, center_bg},
         }
     },
 
@@ -252,7 +256,7 @@ gls.left = {
             provider = 'DiagnosticError',
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.red, colors.bg}
+            highlight = {spec.diag.error, center_bg}
         }
     },
     {
@@ -260,7 +264,7 @@ gls.left = {
             provider = 'DiagnosticWarn',
             condition = condition.hide_in_width,
             icon = '  ',
-            highlight = {colors.yellow, colors.bg},
+            highlight = {spec.diag.warn, center_bg},
         }
     },
     -- Also DiagnosticHint & DiagnosticInfo
@@ -269,7 +273,7 @@ gls.left = {
     {
         MiddleSpacer = {
             provider = Space,
-            highlight = {colors.green, colors.bg}
+            highlight = {no_color, center_bg}
         },
     },
 }
@@ -279,7 +283,7 @@ gls.right = {
         LocationContext = {
             provider = GetLocationContext,
             condition = ShowLocationContext,
-            highlight = {colors.green, colors.bg},
+            highlight = {spec.syntax.comment, center_bg},
         }
     },
 
@@ -287,8 +291,8 @@ gls.right = {
         LSPStatus = {
             provider = Space,
             condition = condition.check_active_lsp,
-            highlight = {colors.green, colors.bg},
-            separator_highlight = {colors.bg, colors.bg},
+            highlight = {spec.diag.ok, center_bg},
+            -- separator_highlight = {center_bg, center_bg},
             icon = '  ',
             separator = ' ',
         }
@@ -297,42 +301,42 @@ gls.right = {
     {
         RightStart = {
             provider = function() return '' end,
-            separator_highlight = {colors.bg, colors.line_bg},
-            highlight = {colors.bg, colors.line_bg}
+            separator_highlight = {center_bg, sides_bg},
+            highlight = {center_bg, sides_bg}
         }
     },
     {
         FileFormat = {
             provider = 'FileFormat',
             condition = IsNotUnix,
-            highlight = {colors.fg, colors.line_bg, 'bold'},
+            highlight = {spec.diag.error, sides_bg, 'bold'},
         }
     },
     {
         LineInfo = {
             provider = {Space, 'LineColumn'},
-            separator_highlight = {colors.blue, colors.line_bg},
-            highlight = {colors.fg, colors.line_bg},
+            highlight = {no_color, sides_bg},
         },
     },
     {
         PerCent = {
             provider = 'LinePercent',
             separator = ' ',
-            separator_highlight = {colors.line_bg, colors.line_bg},
-            highlight = {colors.cyan, colors.darkblue, 'bold'},
+            separator_highlight = {sides_bg, sides_bg},
+            highlight = {spec.diag.info, sides_bg, 'bold'},
         }
     },
 
     {
         ScrollBar = {
             provider = 'ScrollBar',
-            highlight = {colors.blue, colors.purple},
+            highlight = {spec.diag.info, sides_bg},
         }
     },
 }
 
 -- Short line layout
+-- TODO: Doesn't work?
 
 gls.short_line_left = {
     {
@@ -340,8 +344,8 @@ gls.short_line_left = {
             provider =  'FileTypeName',
             separator = '',
             condition = HasFileType,
-            separator_highlight = {colors.purple, colors.bg},
-            highlight = {colors.fg, colors.purple}
+            -- separator_highlight = {no_color, center_bg},
+            highlight = {sides_bg, no_color}
         }
     }
 }
@@ -352,8 +356,8 @@ gls.short_line_right = {
             provider= 'BufferIcon',
             separator = '',
             condition = HasFileType,
-            separator_highlight = {colors.purple, colors.bg},
-            highlight = {colors.fg, colors.purple}
+            -- separator_highlight = {no_color, center_bg},
+            highlight = {sides_bg, no_color}
         }
     }
 }
@@ -435,6 +439,6 @@ gls.short_line_right = {
     --     provider = TreesitterContext,
     --     condition = has_file_prog_filetype,
     --     icon = '  λ ',
-    --     highlight = {colors.yellow, colors.bg},
+    --     highlight = {colors.yellow, center_bg},
     --   }
     -- },
