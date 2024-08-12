@@ -15,6 +15,7 @@
 
 - link:
     ~/.config/alacritty/alacritty.yml: alacritty/alacritty.yml
+    ~/.config/alacritty/nightfox_alacritty.yml: alacritty/nightfox_alacritty.yml
     ~/.config/alacritty/tmux: alacritty/tmux
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
