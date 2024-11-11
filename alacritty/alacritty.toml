@@ -1,0 +1,30 @@
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F11"
+
+[mouse]
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[general]
+import = ["/home/ahodgen/.config/alacritty/local.toml"]
+
+[font.bold]
+family = "Iosevka Nerd Font Mono"
+
+[font.bold_italic]
+family = "Iosevka Nerd Font Mono"
+
+[font.italic]
+family = "Iosevka Nerd Font Mono"
+
+[font.normal]
+family = "Iosevka Nerd Font Mono"
+
+[window]
+startup_mode = "Fullscreen"
+
+[keyboard]
