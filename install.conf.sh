@@ -1,5 +1,17 @@
 #!/bin/bash
 
+export RUSTUP_TARGETS=(
+    x86_64-unknown-linux-musl
+)
+
+export RUSTUP_TOOLCHAINS=(
+    nightly
+)
+
+export RUSTUP_COMPONENTS=(
+    rust-src
+)
+
 export CARGO_BINARIES=(
     ## Rust editing
     cargo-edit

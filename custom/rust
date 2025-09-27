@@ -27,13 +27,63 @@ fi
 # $ curl -L https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
 # $ chmod +x ~/.local/bin/rust-analyzer
 
-is_installed() {
+is_toolchain_installed() {
+    # stable-x86_64-unknown-linux-gnu (default)
+    # ${toolchain}-${target}
+
+    toolchain=$1
+    rustup toolchain list --installed | grep -Fxq "${toolchain}"
+}
+
+is_target_installed() {
+    # x86_64-unknown-linux-gnu
+
+    target=$1
+    rustup target list --installed | grep -Fxq "${target}"
+}
+
+is_component_installed() {
+    # clippy-x86_64-unknown-linux-gnu
+    # ${component}-${target?}
+
+    component=$1
+    rustup component list --installed | grep -Fxq "${component}"
+}
+
+is_binary_installed() {
     bin=$1
     cargo install --list | grep ':$' | cut -d' ' -f1 | grep -Fxq "${bin}"
 }
 
+for toolchain in ${RUSTUP_TOOLCHAINS[@]}; do
+    if ! is_toolchain_installed "${toolchain}"; then
+        log "Installing Rustup toolchain '${toolchain}'"
+        # TODO
+    else
+        log_no_change "${toolchain} already installed"
+    fi
+done
+
+for target in ${RUSTUP_TARGETS[@]}; do
+    if ! is_target_installed "${target}"; then
+        log "Installing Rustup target '${target}'"
+        # TODO
+    else
+        log_no_change "${target} already installed"
+    fi
+done
+
+for component in ${RUSTUP_COMPONENTS[@]}; do
+    if ! is_component_installed "${component}"; then
+        log "Installing Rustup component '${component}'"
+        # TODO
+    else
+        log_no_change "${component} already installed"
+    fi
+done
+
 for bin in ${CARGO_BINARIES[@]}; do
-    if ! is_installed "${bin}"; then
+    if ! is_binary_installed "${bin}"; then
         log "Installing Cargo binary '${bin}'"
         cargo install --quiet "${bin}"
         ret=$((ret + $?))
