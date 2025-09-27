@@ -38,6 +38,7 @@
     ~/.jq: jq
     ~/.config/ripgrep/rc: ripgreprc
     ~/.config/tmux/tmux.conf: tmux.conf
+    ~/.config/tmux/nightfox_tmux.tmux: nightfox_tmux.tmux
     ~/.config/gdb/gdbinit: gdbinit
     ~/.terraformrc: terraformrc
     # Editor
