@@ -42,12 +42,7 @@
     ~/.terraformrc: terraformrc
     # Editor
     ~/.config/ideavim/ideavimrc: ideavimrc
-    ~/.config/nvim/init.vim:
-         path: neovim/init.vim
-         create: true
-    ~/.config/nvim/lua:
-         path: neovim/lua
-         create: true
+    ~/.config/nvim: nvim
     #~/bin:
     #    path: bin/
     #    create: true
