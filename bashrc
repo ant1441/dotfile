@@ -348,6 +348,7 @@ __cmd_source minikube completion bash
 __cmd_source rustup completions bash
 __cmd_source velero completion bash
 __cmd_source terraform-docs completion bash
+__cmd_source hcloud completion bash
 
 if command -v rustup >/dev/null 2>&1; then
     source <(rustup completions bash cargo)
@@ -371,3 +372,5 @@ if [ -e "$HOME/.bashrc_local" ]; then
 fi
 
 [ -f "/home/adam/.local/share/ghcup/env" ] && . "/home/adam/.local/share/ghcup/env" # ghcup-env
+
+source /home/adam/.config/op/plugins.sh
