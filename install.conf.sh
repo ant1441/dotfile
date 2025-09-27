@@ -67,18 +67,25 @@ export APT_PACKAGES=(
 
     # Tools
     1password
+    1password-cli
+    ccls
     curl
     git
     htop
     iperf3
     jq
     neovim
+    nmap
     gron
     shellcheck
     whois
     # inetutils-traceroute
+    traceroute
     tmux
     pv
+
+    # Wayland clipboard tools - required for Neovim clipboard integration
+    wl-clipboard
 
     # Editor / LSP
     # clangd # clangd is a very large install (pulls in libllvm)
@@ -91,7 +98,16 @@ export APT_PACKAGES=(
 
     # Manual
     # Google Chrome - https://linuxhint.com/install_google_chrome_ubuntu_ppa/
+    # ```
+    # sudo wget -q -O /etc/apt/trusted.gpg.d/google_linux_signing_key.pub https://dl-ssl.google.com/linux/linux_signing_key.pub
+    # sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/google_linux_signing_key.pub] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    # sudo apt update
+    # sudo apt install google-chrome-stable
+    # ```
 )
+
+# Snap packages?
+ttyplot
 
 export NODE_PACKAGES=(
     # Neovim LSP
