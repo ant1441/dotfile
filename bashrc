@@ -258,14 +258,20 @@ if command -v rg >/dev/null 2>&1; then
     export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/rc"
 fi
 
+# Swift
+if [ -d "$HOME/Documents/code/open-source/swift/swift/usr" ] ; then
+    export PATH="$HOME/Documents/code/open-source/swift/swift/usr/bin:${PATH}"
+fi
+
 # Emscripten
 if [ -d "$HOME/Documents/emscripten" ] ; then
     PATH="$HOME/Documents/emscripten/emsdk_portable:$HOME/Documents/emscripten/emsdk_portable/clang/fastcomp/build_incoming_64/bin:$HOME/Documents/emscripten/emsdk_portable/node/4.1.1_64bit/bin:$HOME/Documents/emscripten/emsdk_portable/emscripten/incoming:${PATH}"
 fi
 
 # Node
-if [ -d "$HOME/.npm-global" ] ; then
-    export PATH=~/.npm-global/bin:$PATH
+if [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/npm" ] ; then
+    export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin":$PATH
+    export NODE_PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/lib/node_modules:$NODE_PATH"
 fi
 
 # Python
@@ -277,6 +283,9 @@ fi
 if [ -d "/opt/gradle/gradle" ] ; then
     PATH="/opt/gradle/gradle/bin:${PATH}"
 fi
+
+# Haskell
+export GHCUP_USE_XDG_DIRS=1
 
 # Terraform
 if command -v terraform >/dev/null 2>&1; then
@@ -360,3 +369,5 @@ fi
 if [ -e "$HOME/.bashrc_local" ]; then
     . "$HOME/.bashrc_local"
 fi
+
+[ -f "/home/adam/.local/share/ghcup/env" ] && . "/home/adam/.local/share/ghcup/env" # ghcup-env
