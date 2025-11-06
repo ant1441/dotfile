@@ -1,8 +1,6 @@
 local custom_encoding = require("lualine.components.encoding"):extend()
 local custom_fileformat = require("lualine.components.fileformat"):extend()
 
-local navic = require("nvim-navic")
-
 function custom_encoding:init(options)
 	custom_encoding.super.init(self, options)
 end

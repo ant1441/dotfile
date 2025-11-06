@@ -66,8 +66,6 @@ return require("packer").startup(function(use)
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
 	})
 
-	-- "SmiteshP/nvim-navic",
-
 	-- Treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
