@@ -318,7 +318,7 @@ fi
 # Vault
 if command -v vault >/dev/null 2>&1; then
     # vault -autocomplete-install
-    complete -C /home/ahodgen/.local/bin/vault vault
+    complete -C "$HOME/.local/bin/vault" vault
 fi
 
 # Jetbrains toolbox
@@ -393,6 +393,6 @@ if [ -e "$HOME/.bashrc_local" ]; then
     . "$HOME/.bashrc_local"
 fi
 
-[ -f "/home/adam/.local/share/ghcup/env" ] && . "/home/adam/.local/share/ghcup/env" # ghcup-env
+[ -f "$HOME/.local/share/ghcup/env" ] && . "$HOME/.local/share/ghcup/env" # ghcup-env
 
-source /home/adam/.config/op/plugins.sh
+[ -f "$HOME/.config/op/plugins.sh" ] && . "$HOME/.config/op/plugins.sh"
