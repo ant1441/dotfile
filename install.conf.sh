@@ -72,7 +72,8 @@ export APT_PACKAGES=(
     curl
     git
     htop
-    iperf3
+    # iperf has a config screen on install which breaks
+    # iperf3
     jq
     neovim
     nmap
@@ -94,7 +95,7 @@ export APT_PACKAGES=(
     # terraform-ls
 
     # TODO: see custom/node
-    #nodejs
+    # nodejs
 
     # Manual
     # Google Chrome - https://linuxhint.com/install_google_chrome_ubuntu_ppa/
@@ -107,7 +108,7 @@ export APT_PACKAGES=(
 )
 
 # Snap packages?
-ttyplot
+# ttyplot
 
 export NODE_PACKAGES=(
     # Neovim LSP
