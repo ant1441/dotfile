@@ -133,13 +133,6 @@ fi
 # should be on the output of commands, not on the prompt
 force_color_prompt=yes
 
-if [ -f $HOME/.bash_colours ]; then
-    nice_colours=yes
-    . $HOME/.bash_colours
-else
-    nice_colours=
-fi
-
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -151,20 +144,49 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# --------------------------------------------------------------
+#  Prompt configuration – colourised when $color_prompt == yes
+# --------------------------------------------------------------
 if [ "$color_prompt" = yes ]; then
-    if [ "$nice_colours" = yes ]; then
-        PS1='${debian_chroot:+($debian_chroot)}\[${bldgrn}\]\u\[${NC}\]:\[${bldblu}\]\w\[${NC}\]\[${bldylw}\]$(__kubectx_ps1)\[${NC}\]\[\033[33m\]$(__git_ps1)\[${NC}\]\$ '
-    else
-        PS1='${debian_chroot:+($debian_chroot)}'
-        PS1="${PS1}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
-        PS1="${PS1}\[\033[34m\]\$(__kubectx_ps1)\[\033[00m\]"
-        PS1="${PS1}\[\033[35m\]\$(__aws_profile_ps1)\[\033[00m\]"
-        PS1="${PS1}\[\033[33m\]\$(__git_ps1)\[\033[00m\]\$ "
-        # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[34m\]$(__kubectx_ps1)\[\033[00m\]\[\033[33m\]$(__git_ps1)\[\033[00m\]\$ '
+    # ----------------------------------------------------------
+    #  Base prompt – includes optional chroot, user (green),
+    #  current working directory (blue) and the various helpers.
+    # ----------------------------------------------------------
+
+    # Start with the optional debian chroot prefix
+    PS1='${debian_chroot:+($debian_chroot)}'
+
+    # User name (bright green) and cwd (bright blue)
+    PS1="${PS1}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
+
+    # -----------------------------------------------------------------
+    #  Insert hostname only for SSH sessions.
+    #  $SSH_CONNECTION is set by OpenSSH; it is empty for local shells.
+    #  We replace the plain "\u" token with "\u@\h" (magenta) when needed.
+    # -----------------------------------------------------------------
+    if [ -n "$SSH_CONNECTION" ]; then
+        # Change the user part to user@host (magenta)
+        PS1="${PS1//\\u/\\u@\\h}"
     fi
+
+    # Kubectl context (blue)
+    PS1="${PS1}\[\033[34m\]$( __kubectx_ps1 )\[\033[00m\]"
+
+    # AWS profile (magenta)
+    PS1="${PS1}\[\033[35m\]$( __aws_profile_ps1 )\[\033[00m\]"
+
+    # Git branch / status (bright yellow)
+    PS1="${PS1}\[\033[33m\]$( __git_ps1 )\[\033[00m\]$ "
+
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    # --------------------------------------------------------------
+    #  Non‑colour (fallback) prompt – simple user@host:cwd format
+    # --------------------------------------------------------------
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$ '
 fi
+# --------------------------------------------------------------
+#  Clean up temporary variables used only for prompt setup
+# --------------------------------------------------------------
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
