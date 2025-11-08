@@ -5,7 +5,7 @@
 
 ret=0
 
-ALACRITTY_VERSION=0.12.3
+ALACRITTY_VERSION=0.16.1
 ALACRITTY_TERMINFO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/alacritty.info"
 ALACRITTY_LOGO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.svg"
 ALACRITTY_DESKTOP_ENTRY_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.desktop"
@@ -22,7 +22,7 @@ else
 
     # Move the binary to a global path
     # This is required for the Desktop entry to appear
-    mv "${CARGO_HOME}/bin/alacritty" /usr/local/bin/alacritty
+    sudo mv "${CARGO_HOME}/bin/alacritty" /usr/local/bin/alacritty
 
     sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
 fi
