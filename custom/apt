@@ -5,36 +5,48 @@
 
 ret=0
 
+to_install=()
+
 is_installed() {
     package=$1
     dpkg -s "${package}" >/dev/null 2>&1
 }
 
 if ! is_installed software-properties-common; then
+    log "Installing software-properties-common"
     sudo apt install software-properties-common
     update_required=1
 fi
 
-if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-jammy.list" ]
+# TODO: apt is moving from .list to .sources, do we need to handle that?
+if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$(lsb_release -sc).sources" ]
 then
+    log "Adding Neovim PPA"
     sudo add-apt-repository ppa:neovim-ppa/unstable
     update_required=1
 fi
 
 if [ "$update_required" ]
 then
+    log "Updating apt"
     sudo apt update
 fi
 
-for package in ${APT_PACKAGES[@]}; do
+for package in "${APT_PACKAGES[@]}"; do
     if ! is_installed "${package}"; then
         log "Installing APT package '${package}'"
-        sudo apt install -y "${package}"
-        ret=$((ret + $?))
+        to_install+=("$package")
     else
         log_no_change "${package} already installed"
     fi
 done
+
+
+if [ ${#to_install[@]} -gt 0 ]; then
+    printf -v to_install_joined '%s, ' "${to_install[@]}"
+    log "Installing APT packages ${to_install_joined%, }"
+    sudo apt install -y "${to_install[*]}"
+fi
 
 # Revoke sudo credentials
 sudo -k
