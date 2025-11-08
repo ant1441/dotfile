@@ -18,8 +18,8 @@ if ! is_installed software-properties-common; then
     update_required=1
 fi
 
-# TODO: apt is moving from .list to .sources, do we need to handle that?
-if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$(lsb_release -sc).sources" ]
+if ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$(lsb_release -sc).sources" ] &&
+   ! [ -f "/etc/apt/sources.list.d/neovim-ppa-ubuntu-unstable-$(lsb_release -sc).list" ]
 then
     log "Adding Neovim PPA"
     sudo add-apt-repository ppa:neovim-ppa/unstable
