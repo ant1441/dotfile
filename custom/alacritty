@@ -9,6 +9,10 @@ ALACRITTY_VERSION=0.16.1
 ALACRITTY_TERMINFO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/alacritty.info"
 ALACRITTY_LOGO_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.svg"
 ALACRITTY_DESKTOP_ENTRY_URL="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/Alacritty.desktop"
+ALACRITTY_MAN_1="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/alacritty.1.gz"
+ALACRITTY_MAN_5="https://github.com/alacritty/alacritty/releases/download/v${ALACRITTY_VERSION}/alacritty.5.gz"
+
+ALACRITTY_BIN_PATH=/usr/local/bin/alacritty
 
 tmpdir=$(mktemp -d)
 trap 'rm -r -- "$tmpdir"' EXIT
@@ -22,9 +26,7 @@ else
 
     # Move the binary to a global path
     # This is required for the Desktop entry to appear
-    sudo mv "${CARGO_HOME}/bin/alacritty" /usr/local/bin/alacritty
-
-    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+    sudo mv "${CARGO_HOME}/bin/alacritty" "${ALACRITTY_BIN_PATH}"
 fi
 
 if ! infocmp alacritty >/dev/null 2>&1
@@ -37,7 +39,7 @@ fi
 
 if ! [ -e "/usr/share/applications/Alacritty.desktop" ]
 then
-    log "Install desktop entry"
+    log "Installing desktop entry"
     curl -fsSL -o "${tmpdir}/Alacritty.desktop" "${ALACRITTY_DESKTOP_ENTRY_URL}"
     curl -fsSL -o "${tmpdir}/Alacritty.svg" "${ALACRITTY_LOGO_URL}"
 
@@ -46,7 +48,24 @@ then
     sudo update-desktop-database
 fi
 
-# Skipping the man page setup
+if ! [ -e "/usr/share/man/man1/alacritty.1.gz" ]
+then
+    log "Installing alacritty(1)"
+    curl -fsSL -o "${tmpdir}/alacritty.1.gz" "${ALACRITTY_MAN_1}"
+    sudo cp "${tmpdir}/alacritty.1.gz" /usr/share/man/man1/alacritty.1.gz
+fi
+if ! [ -e "/usr/share/man/man5/alacritty.5.gz" ]
+then
+    log "Installing alacritty(5)"
+    curl -fsSL -o "${tmpdir}/alacritty.5.gz" "${ALACRITTY_MAN_5}"
+    sudo cp "${tmpdir}/alacritty.5.gz" /usr/share/man/man5/alacritty.5.gz
+fi
+
+if ! update-alternatives --query x-terminal-emulator | grep -q "$ALACRITTY_BIN_PATH"; then
+    log "Configuring alternative"
+    sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator "${ALACRITTY_BIN_PATH}" 50 \
+         --slave /usr/share/man/man1/x-terminal-emulator.1.gz x-terminal-emulator.1.gz /usr/share/man/man1/alacritty.1.gz
+fi
 
 sudo -k
 
