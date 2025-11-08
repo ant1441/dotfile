@@ -50,14 +50,14 @@ export CARGO_BINARIES=(
 export APT_PACKAGES=(
     # Libraries
     libfontconfig1-dev
-    libfreetype6-dev
+    libfreetype-dev
     libssl-dev
     libxcb-xfixes0-dev
     libxkbcommon-dev
 
     # Python packages
     python3-dev
-    python3-neovim
+    python3-pynvim
     python3-pip
     python3-venv
 
@@ -66,8 +66,8 @@ export APT_PACKAGES=(
     cmake
 
     # Tools
-    1password
-    1password-cli
+    # 1password
+    # 1password-cli
     ccls
     curl
     git
