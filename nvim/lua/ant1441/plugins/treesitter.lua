@@ -38,17 +38,16 @@ return {
                 "yaml",
             }
 
-            local group = vim.api.nvim_create_augroup("ThePrimeagenTreesitter", { clear = true })
-            vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+            local group = vim.api.nvim_create_augroup("ant1441-treesitter", { clear = true })
+            vim.api.nvim_create_autocmd("FileType", {
                 group = group,
-                callback = function()
-                    if vim.bo.buftype ~= "" then
+                callback = function(args)
+                    if vim.bo[args.buf].buftype ~= "" then
                         return
                     end
 
-                    local ok, err = pcall(vim.treesitter.start, 0)
+                    local ok, err = pcall(vim.treesitter.start, args.buf)
                     if ok then
-
                         -- Folds
                         -- vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
                         -- vim.wo[0][0].foldmethod = 'expr'
@@ -61,27 +60,18 @@ return {
 
                     local message = tostring(err)
 
-                    if message:match("language could not be determined")
-                        then
+                    if message:match("language could not be determined") then
                         return
                     end
 
-                    if message:match("Parser could not be created")
-                        or message:match("No parser for language")
-                        then
-                            local b = buf or 0
-                            vim.notify(
-                                ("No Tree-sitter parser for %s"):format(
-                                    vim.bo[b].filetype ~= "" and vim.bo[b].filetype or (lang or "unknown")
-                                ),
-                                vim.log.levels.WARN
-                            )
-                            return
-                        end
+                    if message:match("Parser could not be created") or message:match("No parser for language") then
+                        vim.notify(("No Tree-sitter parser for %s"):format(args.match), vim.log.levels.WARN)
+                        return
+                    end
 
-                        -- Don't hide unrelated Tree-sitter errors.
-                        error(err)
-                    end,
+                    -- Don't hide unrelated Tree-sitter errors.
+                    error(err)
+                end,
             })
 
             vim.api.nvim_create_autocmd("User", {
