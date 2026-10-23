@@ -19,9 +19,9 @@ vim.opt.listchars = { tab = "▷⋅", trail = "·", extends = "⇨", precedes = 
 vim.opt.list = true
 
 vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.tabstop = 8 -- Set tabs to 8 char wide [neovim default]
-vim.opt.shiftwidth = 4 -- Spaces used for (auto)indent
-vim.opt.softtabstop = 4 -- Number of spaces a tab counts for when doing editing (ie. when doing a <BS>)
+vim.opt.tabstop = 8      -- Set tabs to 8 char wide [neovim default]
+vim.opt.shiftwidth = 4   -- Spaces used for (auto)indent
+vim.opt.softtabstop = 4  -- Number of spaces a tab counts for when doing editing (ie. when doing a <BS>)
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("ant1441-lua-tabstop", { clear = true }),
@@ -30,18 +30,18 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		-- Lua uses tabs (enforced via formatter)
 		-- So shrink them, and don't highlight them
-		vim.opt.tabstop = 4
-		vim.opt.listchars = { tab = "  ", trail = "·", extends = "⇨", precedes = "⇦", nbsp = "Ø" }
+		vim.opt_local.tabstop = 4
+		vim.opt_local.listchars = { tab = "  ", trail = "·", extends = "⇨", precedes = "⇦", nbsp = "Ø" }
 	end,
 })
 
 vim.opt.smartindent = true
 
 -- Search
-vim.opt.hlsearch = true -- Highlight search results [neovim default]
-vim.opt.incsearch = true -- Search for a pattern as it is typed [neovim default]
+vim.opt.hlsearch = true   -- Highlight search results [neovim default]
+vim.opt.incsearch = true  -- Search for a pattern as it is typed [neovim default]
 vim.opt.ignorecase = true -- Ignore case in search patterns
-vim.opt.smartcase = true -- Override ignorecase if the pattern contains upper case letters
+vim.opt.smartcase = true  -- Override ignorecase if the pattern contains upper case letters
 
 vim.opt.spelllang = "en_gb,ga_ie"
 -- region ie (en_ie) not supported
@@ -52,10 +52,9 @@ vim.opt.wildignore = ".svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.s
 -- Ensure there is always 4 lines below the cursor (except at EOF)
 vim.opt.scrolloff = 4
 
-vim.opt.updatetime = 100
+vim.opt.updatetime = 250
 
--- Make the escape key more responsive by decreasing the wait time for an
--- escape sequence (e.g., arrow keys).
+-- Keep jk/kj fast
 vim.opt.timeoutlen = 100
 
 vim.opt.colorcolumn = "120"
