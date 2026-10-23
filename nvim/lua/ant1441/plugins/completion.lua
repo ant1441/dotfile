@@ -6,14 +6,15 @@ return {
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
         },
 
-        opts = function()
-            -- Register nvim-cmp lsp capabilities
+        init = function()
+            -- Register nvim-cmp lsp capabilities up front, so servers started
+            -- before the first InsertEnter still advertise them
             vim.lsp.config("*", { capabilities = require("cmp_nvim_lsp").default_capabilities() })
+        end,
 
+        opts = function()
             local cmp = require("cmp")
             return {
                 snippet = {
@@ -27,11 +28,10 @@ return {
                     ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
                     ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
                     ["<C-Space>"] = cmp.mapping.complete(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-
+                    ["<CR>"] = cmp.mapping.confirm({ select = false }),
                 }),
                 sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
+                    { name = "nvim_lsp" },
                 }, {
                     { name = "buffer" },
                 }),
