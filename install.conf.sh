@@ -17,7 +17,7 @@ export CARGO_BINARIES=(
     # `ls` alternative
     eza
     # `find` alternative
-    fd-find
+    # fd-find -> APT
     # A syntax-highlighting pager for git, diff, and grep output
     git-delta
     # `hexdump` alternative
@@ -67,6 +67,8 @@ export APT_PACKAGES=(
     # inetutils-traceroute
     tmux
     pv
+    fd-find
+    socat
 
     # Editor / LSP
     # clangd # clangd is a very large install (pulls in libllvm)
