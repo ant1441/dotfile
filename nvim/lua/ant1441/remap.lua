@@ -20,24 +20,13 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Explore, { desc = "Open Directory" })
 
 -- Yank into system clipboard
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set({ "n", "v" }, "<leader>yy", [["+yy]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Join lines without moving cursor
 vim.keymap.set("n", "J", "mzJ`z")
 
--- Disable Ex mode (now multicursor)
--- vim.keymap.set("n", "Q", "<nop>")
-
--- Formating
--- vim.keymap.set("n", "<leader>f", function()
--- 	require("conform").format({ async = true, lsp_format = "fallback" })
--- end, { desc = "[F]ormat buffer", remap = true })
-
 -- LSP
-vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
-vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>") -- TODO: deprecated
-vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>") -- TODO: deprecated
+vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>") -- TODO: Should I use the builtin <C-w>d ?
 
 vim.keymap.set("n", "]t", function()
 	require("todo-comments").jump_next()
@@ -57,6 +46,6 @@ vim.keymap.set("n", "<A-S-c>", vim.cmd.BufferRestore, { desc = "Restore buffer" 
 
 vim.keymap.set("n", "<A-p>", vim.cmd.BufferPick, { desc = "Pick buffer" })
 
-vim.keymap.set("n", "<A-S-p>", vim.cmd.BufferPin, { desc = "Pick buffer" })
+vim.keymap.set("n", "<A-S-p>", vim.cmd.BufferPin, { desc = "Pin buffer" })
 
 -- vim.keymap.set("n", "<A-1>", vim.cmd.BufferGoto(1), { desc = "Go to buffer 1" })
