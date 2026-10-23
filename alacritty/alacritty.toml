@@ -1,17 +1,4 @@
 
-[[keyboard.bindings]]
-action = "ToggleFullscreen"
-key = "F11"
-
-[mouse]
-
-[[mouse.bindings]]
-action = "PasteSelection"
-mouse = "Middle"
-
-[general]
-import = ["/home/ahodgen/.config/alacritty/local.toml"]
-
 [font.bold]
 family = "Iosevka Nerd Font Mono"
 
@@ -23,6 +10,19 @@ family = "Iosevka Nerd Font Mono"
 
 [font.normal]
 family = "Iosevka Nerd Font Mono"
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F11"
+
+[mouse]
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[general]
+import = ["/home/adam/.config/alacritty/local.toml", "/home/adam/.config/alacritty/nightfox_alacritty.toml"]
 
 [window]
 startup_mode = "Fullscreen"

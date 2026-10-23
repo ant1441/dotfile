@@ -6,6 +6,24 @@
 packer_path="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
 python_venv_path="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/python-venv"
 
+if ! command -v nvim &> /dev/null; then
+    error "nvim not installed"
+    exit 1
+fi
+
+NVIM_PATH=$(which nvim)
+
+# Setup neovim alternatives
+if ! update-alternatives --query editor | grep -q "$NVIM_PATH"; then
+    echo "Configuring alternatives for Neovim..."
+    sudo update-alternatives --install /usr/bin/editor editor "$NVIM_PATH" 100 \
+         --slave /usr/share/man/man1/editor.1.gz editor.1.gz /usr/share/man/man1/nvim.1.gz
+fi
+if ! update-alternatives --query vim | grep -q "$NVIM_PATH"; then
+    echo "Setting Neovim as an alternative for 'vim'..."
+    sudo update-alternatives --install /usr/bin/vim vim "$NVIM_PATH" 100
+fi
+
 if [ -d "$packer_path" ]
 then
     log_no_change "Packer already installed"

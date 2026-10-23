@@ -133,13 +133,6 @@ fi
 # should be on the output of commands, not on the prompt
 force_color_prompt=yes
 
-if [ -f $HOME/.bash_colours ]; then
-    nice_colours=yes
-    . $HOME/.bash_colours
-else
-    nice_colours=
-fi
-
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
@@ -151,20 +144,49 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# --------------------------------------------------------------
+#  Prompt configuration – colourised when $color_prompt == yes
+# --------------------------------------------------------------
 if [ "$color_prompt" = yes ]; then
-    if [ "$nice_colours" = yes ]; then
-        PS1='${debian_chroot:+($debian_chroot)}\[${bldgrn}\]\u\[${NC}\]:\[${bldblu}\]\w\[${NC}\]\[${bldylw}\]$(__kubectx_ps1)\[${NC}\]\[\033[33m\]$(__git_ps1)\[${NC}\]\$ '
-    else
-        PS1='${debian_chroot:+($debian_chroot)}'
-        PS1="${PS1}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
-        PS1="${PS1}\[\033[34m\]\$(__kubectx_ps1)\[\033[00m\]"
-        PS1="${PS1}\[\033[35m\]\$(__aws_profile_ps1)\[\033[00m\]"
-        PS1="${PS1}\[\033[33m\]\$(__git_ps1)\[\033[00m\]\$ "
-        # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[34m\]$(__kubectx_ps1)\[\033[00m\]\[\033[33m\]$(__git_ps1)\[\033[00m\]\$ '
+    # ----------------------------------------------------------
+    #  Base prompt – includes optional chroot, user (green),
+    #  current working directory (blue) and the various helpers.
+    # ----------------------------------------------------------
+
+    # Start with the optional debian chroot prefix
+    PS1='${debian_chroot:+($debian_chroot)}'
+
+    # User name (bright green) and cwd (bright blue)
+    PS1="${PS1}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
+
+    # -----------------------------------------------------------------
+    #  Insert hostname only for SSH sessions.
+    #  $SSH_CONNECTION is set by OpenSSH; it is empty for local shells.
+    #  We replace the plain "\u" token with "\u@\h" (magenta) when needed.
+    # -----------------------------------------------------------------
+    if [ -n "$SSH_CONNECTION" ]; then
+        # Change the user part to user@host (magenta)
+        PS1="${PS1//\\u/\\u@\\h}"
     fi
+
+    # Kubectl context (blue)
+    PS1="${PS1}\[\033[34m\]$( __kubectx_ps1 )\[\033[00m\]"
+
+    # AWS profile (magenta)
+    PS1="${PS1}\[\033[35m\]$( __aws_profile_ps1 )\[\033[00m\]"
+
+    # Git branch / status (bright yellow)
+    PS1="${PS1}\[\033[33m\]$( __git_ps1 )\[\033[00m\]$ "
+
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    # --------------------------------------------------------------
+    #  Non‑colour (fallback) prompt – simple user@host:cwd format
+    # --------------------------------------------------------------
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$ '
 fi
+# --------------------------------------------------------------
+#  Clean up temporary variables used only for prompt setup
+# --------------------------------------------------------------
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -258,14 +280,20 @@ if command -v rg >/dev/null 2>&1; then
     export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/rc"
 fi
 
+# Swift
+if [ -d "$HOME/Documents/code/open-source/swift/swift/usr" ] ; then
+    export PATH="$HOME/Documents/code/open-source/swift/swift/usr/bin:${PATH}"
+fi
+
 # Emscripten
 if [ -d "$HOME/Documents/emscripten" ] ; then
     PATH="$HOME/Documents/emscripten/emsdk_portable:$HOME/Documents/emscripten/emsdk_portable/clang/fastcomp/build_incoming_64/bin:$HOME/Documents/emscripten/emsdk_portable/node/4.1.1_64bit/bin:$HOME/Documents/emscripten/emsdk_portable/emscripten/incoming:${PATH}"
 fi
 
 # Node
-if [ -d "$HOME/.npm-global" ] ; then
-    export PATH=~/.npm-global/bin:$PATH
+if [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/npm" ] ; then
+    export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin":$PATH
+    export NODE_PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/lib/node_modules:$NODE_PATH"
 fi
 
 # Python
@@ -278,6 +306,9 @@ if [ -d "/opt/gradle/gradle" ] ; then
     PATH="/opt/gradle/gradle/bin:${PATH}"
 fi
 
+# Haskell
+export GHCUP_USE_XDG_DIRS=1
+
 # Terraform
 if command -v terraform >/dev/null 2>&1; then
     # terraform -install-autocomplete
@@ -287,7 +318,7 @@ fi
 # Vault
 if command -v vault >/dev/null 2>&1; then
     # vault -autocomplete-install
-    complete -C /home/ahodgen/.local/bin/vault vault
+    complete -C "$HOME/.local/bin/vault" vault
 fi
 
 # Jetbrains toolbox
@@ -339,6 +370,7 @@ __cmd_source minikube completion bash
 __cmd_source rustup completions bash
 __cmd_source velero completion bash
 __cmd_source terraform-docs completion bash
+__cmd_source hcloud completion bash
 
 if command -v rustup >/dev/null 2>&1; then
     source <(rustup completions bash cargo)
@@ -360,3 +392,7 @@ fi
 if [ -e "$HOME/.bashrc_local" ]; then
     . "$HOME/.bashrc_local"
 fi
+
+[ -f "$HOME/.local/share/ghcup/env" ] && . "$HOME/.local/share/ghcup/env" # ghcup-env
+
+[ -f "$HOME/.config/op/plugins.sh" ] && . "$HOME/.config/op/plugins.sh"

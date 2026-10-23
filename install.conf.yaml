@@ -15,6 +15,7 @@
 
 - link:
     ~/.config/alacritty/alacritty.toml: alacritty/alacritty.toml
+    ~/.config/alacritty/nightfox_alacritty.toml: alacritty/nightfox_alacritty.toml
     ~/.config/alacritty/tmux: alacritty/tmux
     # aws
     ~/.aws-profile-for-bashrc.sh: aws-profile-for-bashrc.sh
@@ -37,16 +38,12 @@
     ~/.jq: jq
     ~/.config/ripgrep/rc: ripgreprc
     ~/.config/tmux/tmux.conf: tmux.conf
+    ~/.config/tmux/nightfox_tmux.tmux: nightfox_tmux.tmux
     ~/.config/gdb/gdbinit: gdbinit
     ~/.terraformrc: terraformrc
     # Editor
     ~/.config/ideavim/ideavimrc: ideavimrc
-    ~/.config/nvim/init.vim:
-         path: neovim/init.vim
-         create: true
-    ~/.config/nvim/lua:
-         path: neovim/lua
-         create: true
+    ~/.config/nvim: nvim
     #~/bin:
     #    path: bin/
     #    create: true
