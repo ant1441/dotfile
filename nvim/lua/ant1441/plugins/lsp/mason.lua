@@ -8,7 +8,7 @@ local ensure_installed_lsp = {
 
     -- Python
     "ruff",
-    "jedi_language_server",
+    "ty",
 
     -- Rust
     "rust_analyzer",
