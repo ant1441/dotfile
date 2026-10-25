@@ -4,7 +4,6 @@ return {
     cmd = { "ConformInfo" },
     keys = {
         {
-            -- Customize or remove this keymap to your liking
             "<leader>f",
             function()
                 require("conform").format({ async = true })
@@ -22,15 +21,24 @@ return {
             lua = { "stylua" },
             python = { "isort", "ruff" },
             rust = { "rustfmt" },
-            javascript = { "prettierd", "prettier", stop_after_first = true },
+            javascript = { "prettier" },
+            typescript = { "prettier" },
+            json = { "prettier" },
+            yaml = { "prettier" },
+            markdown = { "prettier" },
+            html = { "prettier" },
+            css = { "prettier" },
+            sh = { "shfmt" },
         },
         -- Set default options
         default_format_opts = {
             lsp_format = "fallback",
         },
         -- Set up format-on-save
-        format_on_save = { timeout_ms = 500 },
-        -- Customize formatters
+        format_on_save = {
+            timeout_ms = 500,
+            lsp_fallback = true, -- Ensures LSP fallbacks work if formatters fail
+        },
         formatters = {
             shfmt = {
                 append_args = { "-i", "2" },

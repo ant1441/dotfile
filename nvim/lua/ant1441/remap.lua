@@ -29,11 +29,11 @@ vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>") -- TODO: Should I use the builtin <C-w>d ?
 
 vim.keymap.set("n", "]t", function()
-	require("todo-comments").jump_next()
+    require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
 
 vim.keymap.set("n", "[t", function()
-	require("todo-comments").jump_prev()
+    require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
 
 vim.keymap.set("n", "<A-l>", vim.cmd.BufferNext, { desc = "Next buffer" })

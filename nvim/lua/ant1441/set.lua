@@ -19,29 +19,30 @@ vim.opt.listchars = { tab = "▷⋅", trail = "·", extends = "⇨", precedes = 
 vim.opt.list = true
 
 vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.tabstop = 8      -- Set tabs to 8 char wide [neovim default]
-vim.opt.shiftwidth = 4   -- Spaces used for (auto)indent
-vim.opt.softtabstop = 4  -- Number of spaces a tab counts for when doing editing (ie. when doing a <BS>)
+vim.opt.tabstop = 8 -- Set tabs to 8 char wide [neovim default]
+vim.opt.shiftwidth = 4 -- Spaces used for (auto)indent
+vim.opt.softtabstop = 4 -- Number of spaces a tab counts for when doing editing (ie. when doing a <BS>)
 
 vim.api.nvim_create_autocmd("FileType", {
-	group = vim.api.nvim_create_augroup("ant1441-lua-tabstop", { clear = true }),
-	desc = "Set tabstop etc. for Lua",
-	pattern = "lua",
-	callback = function()
-		-- Lua uses tabs (enforced via formatter)
-		-- So shrink them, and don't highlight them
-		vim.opt_local.tabstop = 4
-		vim.opt_local.listchars = { tab = "  ", trail = "·", extends = "⇨", precedes = "⇦", nbsp = "Ø" }
-	end,
+    group = vim.api.nvim_create_augroup("ant1441-lua-tabstop", { clear = true }),
+    desc = "Set tabstop etc. for Lua",
+    pattern = "lua",
+    callback = function()
+        -- Match .stylua.toml: spaces, width 4
+        vim.bo.expandtab = true
+        vim.bo.shiftwidth = 4
+        vim.bo.tabstop = 4
+        vim.bo.softtabstop = 4
+    end,
 })
 
 vim.opt.smartindent = true
 
 -- Search
-vim.opt.hlsearch = true   -- Highlight search results [neovim default]
-vim.opt.incsearch = true  -- Search for a pattern as it is typed [neovim default]
+vim.opt.hlsearch = true -- Highlight search results [neovim default]
+vim.opt.incsearch = true -- Search for a pattern as it is typed [neovim default]
 vim.opt.ignorecase = true -- Ignore case in search patterns
-vim.opt.smartcase = true  -- Override ignorecase if the pattern contains upper case letters
+vim.opt.smartcase = true -- Override ignorecase if the pattern contains upper case letters
 
 vim.opt.spelllang = "en_gb,ga_ie"
 -- region ie (en_ie) not supported

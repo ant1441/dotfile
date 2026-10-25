@@ -1,6 +1,6 @@
 return {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     event = "VeryLazy",
     opts = function()
         local custom_encoding = require("lualine.components.encoding"):extend()
@@ -51,5 +51,5 @@ return {
             },
         }
         return opts
-    end
+    end,
 }
