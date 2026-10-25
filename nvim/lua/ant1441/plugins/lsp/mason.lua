@@ -1,30 +1,31 @@
 -- Ensure these Language servers are always installed
 local ensure_installed_lsp = {
-    -- Bash
-    "bashls",
+	-- Bash
+	"bashls",
 
-    -- Lua
-    "lua_ls",
+	-- Lua
+	"lua_ls",
 
-    -- Python
-    "ruff",
-    "ty",
+	-- Python
+	"ruff",
+	"ty",
 
-    -- Rust
-    "rust_analyzer",
+	-- Rust
+	"rust_analyzer",
 
-    -- Terraform
-    "tflint",
-    "terraformls",
+	-- Terraform
+	"tflint",
+	"terraformls",
 }
 
 return {
-    "mason-org/mason-lspconfig.nvim",
-    opts = {
-        ensure_installed = ensure_installed_lsp,
-    },
-    dependencies = {
-        { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
-    },
+	"mason-org/mason-lspconfig.nvim",
+	event = "LspAttach",
+	opts = {
+		ensure_installed = ensure_installed_lsp,
+	},
+	dependencies = {
+		{ "mason-org/mason.nvim", opts = {} },
+		"neovim/nvim-lspconfig",
+	},
 }
