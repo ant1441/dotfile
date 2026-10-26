@@ -49,3 +49,8 @@ vim.keymap.set("n", "<A-p>", vim.cmd.BufferPick, { desc = "Pick buffer" })
 vim.keymap.set("n", "<A-S-p>", vim.cmd.BufferPin, { desc = "Pin buffer" })
 
 -- vim.keymap.set("n", "<A-1>", vim.cmd.BufferGoto(1), { desc = "Go to buffer 1" })
+
+-- Terminal
+
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
+vim.keymap.set("t", "jk", [[<C-\><C-n>]])
