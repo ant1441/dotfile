@@ -1,6 +1,6 @@
 return {
     "lewis6991/gitsigns.nvim",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
         current_line_blame = true,
         preview_config = {
@@ -32,21 +32,17 @@ return {
             -- Navigation
             map("n", "]h", function()
                 if vim.wo.diff then
-                    return "]c"
+                    vim.cmd.normal({ "]c", bang = true })
+                else
+                    gs.nav_hunk("next")
                 end
-                vim.schedule(function()
-                    gs.next_hunk()
-                end)
-                return "<Ignore>"
             end, "Next hunk")
             map("n", "[h", function()
                 if vim.wo.diff then
-                    return "[c"
+                    vim.cmd.normal({ "[c", bang = true })
+                else
+                    gs.nav_hunk("prev")
                 end
-                vim.schedule(function()
-                    gs.prev_hunk()
-                end)
-                return "<Ignore>"
             end, "Prev hunk")
 
             -- Actions
