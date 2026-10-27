@@ -52,12 +52,17 @@ return {
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
-            default = { "lsp", "path", "snippets", "buffer", "git", "dictionary" },
+            default = { "lsp", "path", "snippets", "buffer", "git" },
+            per_filetype = {
+                markdown = { inherit_defaults = true, "dictionary" },
+                text = { inherit_defaults = true, "dictionary" },
+                gitcommit = { inherit_defaults = true, "dictionary" },
+            },
             providers = {
                 dictionary = {
                     module = "blink-cmp-dictionary",
                     name = "Dict",
-                    min_keyword_length = 1,
+                    min_keyword_length = 3,
                     opts = {
                         -- Optional: explicitly force fallback mode
                         -- (By default, fallback is used when fzf is not found)

@@ -3,6 +3,12 @@ return {
     dependencies = { "saghen/blink.cmp" },
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+        vim.diagnostic.config({
+            virtual_text = true,
+            severity_sort = true,
+            float = { border = "rounded" },
+        })
+
         vim.lsp.config("*", {
             capabilities = require("blink.cmp").get_lsp_capabilities(),
         })
