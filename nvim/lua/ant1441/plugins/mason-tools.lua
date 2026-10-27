@@ -12,7 +12,7 @@ return {
             "stylua",
 
             -- Python
-            "isort",
+            "ruff",
 
             "prettier",
             -- Optional: linters if you use them

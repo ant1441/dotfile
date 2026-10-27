@@ -18,17 +18,18 @@ return {
     opts = {
         -- Define your formatters
         formatters_by_ft = {
-            lua = { "stylua" },
-            python = { "isort", "ruff" },
-            rust = { "rustfmt" },
-            javascript = { "prettier" },
-            typescript = { "prettier" },
-            json = { "prettier" },
-            yaml = { "prettier" },
-            markdown = { "prettier" },
-            html = { "prettier" },
             css = { "prettier" },
+            terraform = { "terraform_fmt" },
+            html = { "prettier" },
+            javascript = { "prettier" },
+            json = { "prettier" },
+            lua = { "stylua" },
+            markdown = { "prettier" },
+            python = { "ruff_organize_imports", "ruff_format" },
+            rust = { "rustfmt" },
             sh = { "shfmt" },
+            typescript = { "prettier" },
+            yaml = { "prettier" },
         },
         -- Set default options
         default_format_opts = {
@@ -36,8 +37,7 @@ return {
         },
         -- Set up format-on-save
         format_on_save = {
-            timeout_ms = 500,
-            lsp_fallback = true, -- Ensures LSP fallbacks work if formatters fail
+            timeout_ms = 1500,
         },
         formatters = {
             shfmt = {

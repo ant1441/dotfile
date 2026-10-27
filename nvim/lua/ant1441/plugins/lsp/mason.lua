@@ -20,7 +20,7 @@ local ensure_installed_lsp = {
 
 return {
     "mason-org/mason-lspconfig.nvim",
-    event = "LspAttach",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
         ensure_installed = ensure_installed_lsp,
     },
