@@ -170,13 +170,13 @@ if [ "$color_prompt" = yes ]; then
     fi
 
     # Kubectl context (blue)
-    PS1="${PS1}\[\033[34m\]$( __kubectx_ps1 )\[\033[00m\]"
+    PS1="${PS1}\[\033[34m\]\$(__kubectx_ps1)\[\033[00m\]"
 
     # AWS profile (magenta)
-    PS1="${PS1}\[\033[35m\]$( __aws_profile_ps1 )\[\033[00m\]"
+    PS1="${PS1}\[\033[35m\]\$(__aws_profile_ps1)\[\033[00m\]"
 
     # Git branch / status (bright yellow)
-    PS1="${PS1}\[\033[33m\]$( __git_ps1 )\[\033[00m\]$ "
+    PS1="${PS1}\[\033[33m\]\$(__git_ps1)\[\033[00m\]$ "
 
 else
     # --------------------------------------------------------------
