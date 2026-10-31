@@ -28,3 +28,8 @@ import = ["/home/adam/.config/alacritty/local.toml", "/home/adam/.config/alacrit
 startup_mode = "Fullscreen"
 
 [keyboard]
+
+
+[terminal.shell]
+program = "/bin/sh"
+args = ["-c", 'exec tmux new-session -A -s "alacritty-$ALACRITTY_WINDOW_ID"']
