@@ -54,3 +54,8 @@ vim.keymap.set("n", "<A-S-p>", vim.cmd.BufferPin, { desc = "Pin buffer" })
 
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 vim.keymap.set("t", "jk", [[<C-\><C-n>]])
+
+-- Window movement from a terminal
+for _, key in ipairs({ "h", "j", "k", "l" }) do
+    vim.keymap.set("t", "<C-" .. key .. ">", "<cmd>wincmd " .. key .. "<cr>", { desc = "Move to window " .. key })
+end

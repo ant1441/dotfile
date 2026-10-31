@@ -28,6 +28,7 @@ return {
                 "markdown_inline",
                 "python",
                 "query",
+                "regex",
                 "rust",
                 "ssh_config",
                 "terraform",
